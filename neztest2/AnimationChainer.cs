@@ -3,11 +3,13 @@ using Nez;
 
 namespace NezTest2
 {
-    public class AnimationChain
+    public class AnimationChainer : Component, IUpdatable
     {
         public string PrevAnimation { private set; get; }
         float elapsedTime = -1;
         readonly static float maxTime = 0.3f;
+
+        public AnimationChainer() => SetUpdateOrder(-1);
 
         public void Start(string prevAnimation)
         {
@@ -17,12 +19,12 @@ namespace NezTest2
 
         public void End() => elapsedTime = -1;
 
-        public void Update() {
+        void IUpdatable.Update() {
             if (elapsedTime != -1)
                 elapsedTime += Time.DeltaTime;
         }
 
-        public bool withinChainTime()
+        public bool WithinChainTime()
         {
             return elapsedTime != -1 && elapsedTime <= maxTime;
         }

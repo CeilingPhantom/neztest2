@@ -11,7 +11,7 @@ namespace NezTest2
     public class Player : Component, IUpdatable
     {
         SpriteAnimator animator;
-        AnimationChain animationChain = new AnimationChain();
+        AnimationChainer animationChainer;
 
         Mover mover;
         float speed = 70f;
@@ -27,6 +27,8 @@ namespace NezTest2
         {
             animator = Entity.AddComponent(new SpriteAnimator());
             AddAnimations();
+
+            animationChainer = Entity.AddComponent(new AnimationChainer());
 
             mover = Entity.AddComponent(new Mover());
 
@@ -66,7 +68,7 @@ namespace NezTest2
                 new Sprite(Entity.Scene.Content.LoadTexture($"{path}attack1-03.png")),
                 new Sprite(Entity.Scene.Content.LoadTexture($"{path}attack1-04.png")),
             });
-            animator.AddAnimation("Attack2", 6 * 2, new Sprite[]
+            animator.AddAnimation("Attack2", 5 * 2, new Sprite[]
             {
                 new Sprite(Entity.Scene.Content.LoadTexture($"{path}attack2-00.png")),
                 new Sprite(Entity.Scene.Content.LoadTexture($"{path}attack2-01.png")),
@@ -75,7 +77,7 @@ namespace NezTest2
                 new Sprite(Entity.Scene.Content.LoadTexture($"{path}attack2-04.png")),
                 new Sprite(Entity.Scene.Content.LoadTexture($"{path}attack2-05.png")),
             });
-            animator.AddAnimation("Attack3", 6 * 2, new Sprite[]
+            animator.AddAnimation("Attack3", 5 * 2, new Sprite[]
             {
                 new Sprite(Entity.Scene.Content.LoadTexture($"{path}attack3-00.png")),
                 new Sprite(Entity.Scene.Content.LoadTexture($"{path}attack3-01.png")),
@@ -111,11 +113,10 @@ namespace NezTest2
             var moveDir = new Vector2(xAxisInput.Value, yAxisInput.Value);
             string animation;
             var loopMode = SpriteAnimator.LoopMode.Loop;
-
-            animationChain.Update();
+            
             if (animator.IsCompleted &&
                 animator.CurrentAnimationName.Contains("Attack"))
-                animationChain.Start(animator.CurrentAnimationName);
+                animationChainer.Start(animator.CurrentAnimationName);
 
             if (!animationLock || (animationLock && animator.IsCompleted))
             {
@@ -123,13 +124,13 @@ namespace NezTest2
                 if (primaryAttack.IsDown)
                 {
                     animation = "Attack1";
-                    if (animationChain.withinChainTime()) {
-                        if (animationChain.PrevAnimation == "Attack1")
+                    if (animationChainer.WithinChainTime()) {
+                        if (animationChainer.PrevAnimation == "Attack1")
                             animation = "Attack2";
-                        if (animationChain.PrevAnimation == "Attack2")
+                        if (animationChainer.PrevAnimation == "Attack2")
                             animation = "Attack3";
                     }
-                    animationChain.End();
+                    animationChainer.End();
                     animationLock = true;
                     loopMode = SpriteAnimator.LoopMode.Once;
                 }
