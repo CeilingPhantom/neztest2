@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using Nez;
 using Nez.Sprites;
 using Nez.Textures;
-using NezTest2.Backend;
+using Nez.Tiled;
 
 namespace NezTest2
 {
@@ -13,15 +13,21 @@ namespace NezTest2
         SpriteAnimator animator;
         AnimationChainer animationChainer;
 
-        Mover mover;
-        float speed = 70f;
+        BoxCollider collider;
+        TiledMapMover mover;
+        TiledMapMover.CollisionState collisionState;
+        Vector2 velocity = Vector2.Zero;
 
-        SubpixelVector2 subpixelVector2 = new SubpixelVector2();
+        float speed = 70f;
+        float jumpHeight = 50f;
+        float gravity = 600f;
+
         VirtualIntegerAxis xAxisInput;
         VirtualIntegerAxis yAxisInput;
-        VirtualButton primaryAttack;
+        VirtualButton primaryAttackInput, jumpInput;
 
         bool animationLock = false;
+        bool movementLock = false;
 
         public override void OnAddedToEntity()
         {
@@ -30,7 +36,9 @@ namespace NezTest2
 
             animationChainer = Entity.AddComponent(new AnimationChainer());
 
-            mover = Entity.AddComponent(new Mover());
+            collider = Entity.GetComponent<BoxCollider>();
+            mover = Entity.GetComponent<TiledMapMover>();
+            collisionState = new TiledMapMover.CollisionState();
 
             SetupInput();
         }
@@ -86,6 +94,16 @@ namespace NezTest2
                 new Sprite(Entity.Scene.Content.LoadTexture($"{path}attack3-04.png")),
                 new Sprite(Entity.Scene.Content.LoadTexture($"{path}attack3-05.png")),
             });
+            animator.AddAnimation("Jump", 5 * 2, new Sprite[]
+            {
+                new Sprite(Entity.Scene.Content.LoadTexture($"{path}jump-02.png")),
+                new Sprite(Entity.Scene.Content.LoadTexture($"{path}jump-03.png")),
+            });
+            animator.AddAnimation("Fall", 5 * 2, new Sprite[]
+            {
+                new Sprite(Entity.Scene.Content.LoadTexture($"{path}jump-03.png")),
+                new Sprite(Entity.Scene.Content.LoadTexture($"{path}jump-02.png")),
+            });
             animator.AddAnimation("UseItem", 10, new Sprite[]
             {
                 new Sprite(Entity.Scene.Content.LoadTexture($"{path}items-00.png")),
@@ -104,16 +122,24 @@ namespace NezTest2
             yAxisInput = new VirtualIntegerAxis();
             yAxisInput.Nodes.Add(new VirtualAxis.KeyboardKeys(VirtualInput.OverlapBehavior.TakeNewer, Keys.Up, Keys.Down));
 
-            primaryAttack = new VirtualButton();
-            primaryAttack.Nodes.Add(new VirtualButton.KeyboardKey(Keys.Z));
+            primaryAttackInput = new VirtualButton();
+            primaryAttackInput.Nodes.Add(new VirtualButton.KeyboardKey(Keys.Z));
+
+            jumpInput = new VirtualButton();
+            jumpInput.Nodes.Add(new VirtualButton.KeyboardKey(Keys.Space));
         }
 
         void IUpdatable.Update()
         {
-            var moveDir = new Vector2(xAxisInput.Value, yAxisInput.Value);
+            UpdateAnimations();
+            UpdateMovement();
+        }
+
+        void UpdateAnimations()
+        {
             string animation;
             var loopMode = SpriteAnimator.LoopMode.Loop;
-            
+
             if (animator.IsCompleted &&
                 animator.CurrentAnimationName.Contains("Attack"))
                 animationChainer.Start(animator.CurrentAnimationName);
@@ -121,10 +147,11 @@ namespace NezTest2
             if (!animationLock || (animationLock && animator.IsCompleted))
             {
                 // animation locking actions
-                if (primaryAttack.IsDown)
+                if (primaryAttackInput.IsDown)
                 {
                     animation = "Attack1";
-                    if (animationChainer.WithinChainTime()) {
+                    if (animationChainer.WithinChainTime())
+                    {
                         if (animationChainer.PrevAnimation == "Attack1")
                             animation = "Attack2";
                         if (animationChainer.PrevAnimation == "Attack2")
@@ -132,14 +159,40 @@ namespace NezTest2
                     }
                     animationChainer.End();
                     animationLock = true;
+                    movementLock = true;
                     loopMode = SpriteAnimator.LoopMode.Once;
                 }
+                // jumping
+                else if (!collisionState.Below && velocity.Y <= 0)
+                {
+                    animation = "Jump";
+                    animationLock = false;
+                    movementLock = false;
+                    loopMode = SpriteAnimator.LoopMode.ClampForever;
+                    if (velocity.X < 0)
+                        animator.FlipX = true;
+                    else if (velocity.X > 0)
+                        animator.FlipX = false;
+                }
+                // falling
+                else if (!collisionState.Below && velocity.Y > 0)
+                {
+                    animation = "Fall";
+                    animationLock = false;
+                    movementLock = false;
+                    loopMode = SpriteAnimator.LoopMode.ClampForever;
+                    if (velocity.X < 0)
+                        animator.FlipX = true;
+                    else if (velocity.X > 0)
+                        animator.FlipX = false;
+                }
                 // movement
-                else if (moveDir.X != 0)
+                else if (velocity.X != 0)
                 {
                     animation = "Run";
                     animationLock = false;
-                    if (moveDir.X < 0)
+                    movementLock = false;
+                    if (velocity.X < 0)
                         animator.FlipX = true;
                     else
                         animator.FlipX = false;
@@ -149,19 +202,35 @@ namespace NezTest2
                 {
                     animation = "Idle";
                     animationLock = false;
+                    movementLock = false;
                 }
 
                 if (!animator.IsAnimationActive(animation))
                     animator.Play(animation, loopMode);
             }
+        }
 
-            if (moveDir != Vector2.Zero && animator.IsAnimationActive("Run"))
+        void UpdateMovement()
+        {
+            velocity.X = 0;
+            if (!movementLock)
             {
-                var movement = moveDir * speed * Time.DeltaTime;
-                subpixelVector2.Update(ref movement);
-                mover.CalculateMovement(ref movement, out var res);
-                mover.ApplyMovement(movement);
+                if (xAxisInput.Value < 0)
+                    velocity.X = -speed;
+                else if (xAxisInput > 0)
+                    velocity.X = speed;
+
+                if (collisionState.Below && jumpInput.IsPressed)
+                    velocity.Y = -Mathf.Sqrt(jumpHeight * gravity);
             }
+
+            velocity.Y += gravity * Time.DeltaTime;
+
+            if (velocity != Vector2.Zero)
+                mover.Move(velocity * Time.DeltaTime, collider, collisionState);
+
+            if (collisionState.Below)
+                velocity.Y = 0;
         }
     }
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/james/Documents/MonoGame Projects/NezTest2/neztest2/Content/Player/adventurer-cast-01.png</SourceFile>
+  <SourceFile>C:/Users/james/Documents/MonoGame Projects/neztest2/neztest2/Content/Player/adventurer-cast-01.png</SourceFile>
   <SourceTime>2018-07-02T15:03:37.4960179+10:00</SourceTime>
-  <DestFile>C:/Users/james/Documents/MonoGame Projects/NezTest2/neztest2/Content/bin/DesktopGL/Player/adventurer-cast-01.xnb</DestFile>
-  <DestTime>2020-04-28T14:10:44.1951192+10:00</DestTime>
+  <DestFile>C:/Users/james/Documents/MonoGame Projects/neztest2/neztest2/Content/bin/DesktopGL/Player/adventurer-cast-01.xnb</DestFile>
+  <DestTime>2020-05-02T14:20:53.4334666+10:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2018-12-09T03:35:54+11:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

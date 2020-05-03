@@ -1,8 +1,0 @@
-C:\Users\james\Documents\MonoGame Projects\NezTest2\NezTest2.Backend\bin\Debug\netstandard1.4\NezTest2.Backend.deps.json
-C:\Users\james\Documents\MonoGame Projects\NezTest2\NezTest2.Backend\bin\Debug\netstandard1.4\NezTest2.Backend.dll
-C:\Users\james\Documents\MonoGame Projects\NezTest2\NezTest2.Backend\bin\Debug\netstandard1.4\NezTest2.Backend.pdb
-C:\Users\james\Documents\MonoGame Projects\NezTest2\NezTest2.Backend\obj\Debug\netstandard1.4\NezTest2.Backend.csprojAssemblyReference.cache
-C:\Users\james\Documents\MonoGame Projects\NezTest2\NezTest2.Backend\obj\Debug\netstandard1.4\NezTest2.Backend.csproj.CoreCompileInputs.cache
-C:\Users\james\Documents\MonoGame Projects\NezTest2\NezTest2.Backend\obj\Debug\netstandard1.4\NezTest2.Backend.AssemblyInfo.cs
-C:\Users\james\Documents\MonoGame Projects\NezTest2\NezTest2.Backend\obj\Debug\netstandard1.4\NezTest2.Backend.dll
-C:\Users\james\Documents\MonoGame Projects\NezTest2\NezTest2.Backend\obj\Debug\netstandard1.4\NezTest2.Backend.pdb

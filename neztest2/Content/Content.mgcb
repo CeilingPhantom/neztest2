@@ -10,12 +10,24 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:..\..\..\..\..\.nuget\packages\nez.pipelineimporter\0.9.5\tools\Ionic.ZLib.dll
-/reference:..\..\..\..\..\.nuget\packages\nez.pipelineimporter\0.9.5\tools\Newtonsoft.Json.dll
-/reference:..\..\..\..\..\.nuget\packages\nez.pipelineimporter\0.9.5\tools\Nez.dll
-/reference:..\..\..\..\..\.nuget\packages\nez.pipelineimporter\0.9.5\tools\Nez.PipelineImporter.dll
+/reference:Ionic.ZLib.dll
+/reference:Newtonsoft.Json.dll
+/reference:Nez.dll
+/reference:Nez.PipelineImporter.dll
 
 #---------------------------------- Content ---------------------------------#
+
+#begin mininicular.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:mininicular.png
 
 #begin Player/adventurer-air-attack1-00.png
 /importer:TextureImporter
@@ -1324,4 +1336,9 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Player/adventurer-wall-slide-01.png
+
+#begin test.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:test.tmx
 

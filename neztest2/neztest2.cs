@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Nez;
+using Nez.Tiled;
 
 namespace NezTest2
 {
@@ -19,12 +20,20 @@ namespace NezTest2
         {
             base.Initialize();
             Scene.SetDefaultDesignResolution(320, 320, Scene.SceneResolutionPolicy.ShowAllPixelPerfect);
-            Scene = Scene.CreateWithDefaultRenderer(Color.CornflowerBlue);
+            var scene = Scene.CreateWithDefaultRenderer(Color.CornflowerBlue);
 
-            Entity player = Scene.CreateEntity("player", new Vector2(200, 200));
+            var tiledTmx = scene.Content.LoadTiledMap("Content/test.tmx");
+            var tiledMap = scene.CreateEntity("tiled-map");
+            tiledMap.AddComponent(new TiledMapRenderer(tiledTmx, "1"));
+
+            Entity player = scene.CreateEntity("player", new Vector2(20, 200));
             player.AddComponent(new Player());
+            player.AddComponent(new BoxCollider());
+            player.AddComponent(new TiledMapMover(tiledTmx.GetLayer<TmxLayer>("1")));
 
             //Scene.Camera.AddComponent(new FollowCamera(player));
+
+            Scene = scene;
         }
     }
 }

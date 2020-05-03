@@ -4,6 +4,7 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
+    <File>C:/Users/james/Documents/MonoGame Projects/NezTest2/neztest2/Content/mininicular.png</File>
     <File>C:/Users/james/Documents/MonoGame Projects/NezTest2/neztest2/Content/Player/adventurer-air-attack1-00.png</File>
     <File>C:/Users/james/Documents/MonoGame Projects/NezTest2/neztest2/Content/Player/adventurer-air-attack1-01.png</File>
     <File>C:/Users/james/Documents/MonoGame Projects/NezTest2/neztest2/Content/Player/adventurer-air-attack1-02.png</File>
@@ -113,8 +114,11 @@
     <File>C:/Users/james/Documents/MonoGame Projects/NezTest2/neztest2/Content/Player/adventurer-swrd-shte-03.png</File>
     <File>C:/Users/james/Documents/MonoGame Projects/NezTest2/neztest2/Content/Player/adventurer-wall-slide-00.png</File>
     <File>C:/Users/james/Documents/MonoGame Projects/NezTest2/neztest2/Content/Player/adventurer-wall-slide-01.png</File>
+    <File>C:/Users/james/Documents/MonoGame Projects/NezTest2/neztest2/Content/test.tmx</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

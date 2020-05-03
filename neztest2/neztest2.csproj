@@ -24,7 +24,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Nez\Nez.Portable\Nez.csproj" />
-    <ProjectReference Include="..\NezTest2.Backend\NezTest2.Backend.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -71,9 +70,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Content\**" CopyToOutputDirectory="PreserveNewest"/>
+    <None Include="Content\test.tmx" CopyToOutputDirectory="PreserveNewest"/>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\testtileset2.tsx" CopyToOutputDirectory="PreserveNewest"/>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\mininicular.png" CopyToOutputDirectory="PreserveNewest"/>
+  </ItemGroup>
+  
   <ItemGroup>
     <None Include="Content\Player\**" CopyToOutputDirectory="PreserveNewest"/>
   </ItemGroup>
+
 </Project>

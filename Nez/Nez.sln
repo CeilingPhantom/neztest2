@@ -86,4 +86,11 @@ Global
 		{f8c8a3ad-84fe-4bda-952f-223b1b3c6bcd}.Debug|iPhone.ActiveCfg = Debug|Any CPU
 		{f8c8a3ad-84fe-4bda-952f-223b1b3c6bcd}.Debug|iPhone.Build.0 = Debug|Any CPU
 	EndGlobalSection
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B69736C3-31B8-40AC-8A92-6A6B93C8AD11}
+	EndGlobalSection
 EndGlobal
