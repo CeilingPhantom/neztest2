@@ -337,6 +337,24 @@ namespace Nez
 			return false;
 		}
 
+		public bool CollidesWithAnyBut(Collider[] excludedColliders, out CollisionResult result)
+		{
+			result = new CollisionResult();
+
+			var neighbors = Physics.BoxcastBroadphaseExcludingSelf(this, CollidesWithLayers);
+
+			foreach (var neighbor in neighbors)
+			{
+				if (neighbor.IsTrigger)
+					continue;
+
+				if (!excludedColliders.Contains(neighbor) && CollidesWith(neighbor, out result))
+					return true;
+			}
+
+			return false;
+		}
+
 
 		/// <summary>
 		/// checks to see if this Collider with motion applied (delta movement vector) collides with any collider. If it does, true will be

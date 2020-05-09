@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>C:/Users/james/Documents/MonoGame Projects/NezTest2/neztest2/Content/test.tmx</SourceFile>
-  <SourceTime>2020-05-03T15:46:55.7722122+10:00</SourceTime>
+  <SourceTime>2020-05-04T13:43:30.7108013+10:00</SourceTime>
   <DestFile>C:/Users/james/Documents/MonoGame Projects/NezTest2/neztest2/Content/bin/DesktopGL/Content/test.xnb</DestFile>
-  <DestTime>2020-05-03T16:02:43.6837538+10:00</DestTime>
+  <DestTime>2020-05-04T13:43:34.7339796+10:00</DestTime>
   <Importer>TiledMapImporter</Importer>
   <ImporterTime>2019-09-15T04:26:40+10:00</ImporterTime>
   <Processor>TiledMapProcessor</Processor>

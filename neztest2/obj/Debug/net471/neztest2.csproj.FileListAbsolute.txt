@@ -257,3 +257,4 @@ C:\Users\james\Documents\MonoGame Projects\NezTest2\neztest2\bin\Debug\net471\Co
 C:\Users\james\Documents\MonoGame Projects\NezTest2\neztest2\bin\Debug\net471\Content\testtileset2.tsx
 C:\Users\james\Documents\MonoGame Projects\NezTest2\neztest2\bin\Debug\net471\Content\mininicular.xnb
 C:\Users\james\Documents\MonoGame Projects\NezTest2\neztest2\bin\Debug\net471\Content\mininicular.png
+C:\Users\james\Documents\MonoGame Projects\NezTest2\neztest2\bin\Debug\net471\Content\Player\player.tsx
