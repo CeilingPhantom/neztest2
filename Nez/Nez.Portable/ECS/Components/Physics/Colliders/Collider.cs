@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Nez.PhysicsShapes;
 
@@ -337,7 +338,7 @@ namespace Nez
 			return false;
 		}
 
-		public bool CollidesWithAnyBut(Collider[] excludedColliders, out CollisionResult result)
+		public bool CollidesWithAnyBut(List<Collider> excludedColliders, out CollisionResult result)
 		{
 			result = new CollisionResult();
 

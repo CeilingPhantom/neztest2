@@ -21,6 +21,8 @@ namespace NezTest2
         Dictionary<string, List<BoxCollider>> entityColliders;
         Dictionary<string, List<BoxCollider>> attackColliders;
 
+        bool currAnimationHasAttacked = false;
+
         BoxCollider tiledCollider;
         TiledMapMover mover;
         TiledMapMover.CollisionState tiledCollisionState;
@@ -202,6 +204,7 @@ namespace NezTest2
                     foreach (var colliderObj in frame.ObjectGroups["entityCollision"].Objects)
                     {
                         var collider = Entity.AddComponent(new BoxCollider(colliderObj.X - animationFrames.TileWidth / 2, colliderObj.Y - animationFrames.TileHeight / 2, colliderObj.Width, colliderObj.Height));
+                        collider.PhysicsLayer = 2;
                         collider.SetEnabled(false);
                         colliders.Add(collider);
                     }
@@ -220,6 +223,7 @@ namespace NezTest2
                     foreach (var colliderObj in frame.ObjectGroups["attackCollision"].Objects)
                     {
                         var collider = Entity.AddComponent(new BoxCollider(colliderObj.X - animationFrames.TileWidth / 2, colliderObj.Y - animationFrames.TileHeight / 2, colliderObj.Width, colliderObj.Height));
+                        collider.PhysicsLayer = 2;
                         collider.SetEnabled(false);
                         colliders.Add(collider);
                     }
@@ -251,7 +255,7 @@ namespace NezTest2
             UpdateActiveAttackColliders();
             prevAnimationFrameName = animations[animator.CurrentAnimationName][animator.CurrentFrame];
 
-
+            CheckAttack();
         }
 
         void UpdateAnimations()
@@ -265,7 +269,7 @@ namespace NezTest2
 
             if (!animationLock || (animationLock && animator.IsCompleted))
             {
-                // animation locking actions
+                // normal attack
                 if (primaryAttackInput.IsDown)
                 {
                     animation = "attack1";
@@ -280,6 +284,7 @@ namespace NezTest2
                     animationLock = true;
                     movementLock = true;
                     loopMode = SpriteAnimator.LoopMode.Once;
+                    currAnimationHasAttacked = false;
                 }
                 // jumping
                 else if ((tiledCollisionState.Below && jumpInput.IsPressed) || (!tiledCollisionState.Below && velocity.Y <= 0))
@@ -402,6 +407,22 @@ namespace NezTest2
             }
         }
 
-        void CheckAttacked() { }
+        void CheckAttack()
+        {
+            if (!currAnimationHasAttacked)
+            {
+                currAnimationHasAttacked = true;
+
+                var excludedColliders = new List<Collider> { tiledCollider };
+                entityColliders[prevAnimationFrameName].ForEach(collider => excludedColliders.Add(collider));
+                attackColliders[prevAnimationFrameName].ForEach(collider => excludedColliders.Add(collider));
+                foreach (var collider in attackColliders[prevAnimationFrameName])
+                {
+                    var res = new CollisionResult();
+                    System.Diagnostics.Debug.WriteLine(collider.CollidesWithAnyBut(excludedColliders, out res));
+                    System.Diagnostics.Debug.WriteLine("---");
+                }
+            }
+        }
     }
 }

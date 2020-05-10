@@ -74,7 +74,7 @@
    <object id="9" x="25" y="5" width="21" height="2"/>
    <object id="10" x="27" y="7" width="20" height="2"/>
    <object id="11" x="29" y="9" width="19" height="2"/>
-   <object id="12" x="36" y="11" width="14" height="3"/>
+   <object id="12" x="35" y="11" width="14" height="3"/>
    <object id="14" x="36" y="14" width="13" height="9"/>
    <object id="15" x="35" y="23" width="12" height="2"/>
    <object id="16" x="33" y="25" width="13" height="2"/>
