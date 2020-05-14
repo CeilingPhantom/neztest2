@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Nez;
 using Nez.Tiled;
+using NezTest2.Units;
 
 namespace NezTest2
 {
@@ -29,6 +30,10 @@ namespace NezTest2
             Entity player = scene.CreateEntity("player", new Vector2(20, 200));
             player.AddComponent(new Player());
             player.AddComponent(new TiledMapMover(tiledTmx.GetLayer<TmxLayer>("1")));
+
+            Entity a = scene.CreateEntity("2", new Vector2(240, 200));
+            a.AddComponent(new Player());
+            a.AddComponent(new TiledMapMover(tiledTmx.GetLayer<TmxLayer>("1")));
 
             //Scene.Camera.AddComponent(new FollowCamera(player));
 
