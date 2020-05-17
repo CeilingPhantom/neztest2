@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/james/Documents/MonoGame Projects/neztest2/neztest2/Content/mininicular.png</SourceFile>
+  <SourceFile>C:/Users/james/Documents/MonoGame Projects/NezTest2/neztest2/Content/mininicular.png</SourceFile>
   <SourceTime>2020-02-07T12:41:35.2572107+11:00</SourceTime>
-  <DestFile>C:/Users/james/Documents/MonoGame Projects/neztest2/neztest2/Content/bin/DesktopGL/mininicular.xnb</DestFile>
-  <DestTime>2020-05-02T14:20:53.2102637+10:00</DestTime>
+  <DestFile>C:/Users/james/Documents/MonoGame Projects/NezTest2/neztest2/Content/bin/DesktopGL/mininicular.xnb</DestFile>
+  <DestTime>2020-05-16T13:34:14.0154318+10:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2018-12-09T03:35:54+11:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

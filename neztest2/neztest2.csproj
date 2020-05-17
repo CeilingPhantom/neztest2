@@ -80,7 +80,10 @@
   </ItemGroup>
   
   <ItemGroup>
-    <None Include="Content\Player\**" CopyToOutputDirectory="PreserveNewest"/>
+    <None Include="Content\Units\player\**" CopyToOutputDirectory="PreserveNewest"/>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Units\slime\**" CopyToOutputDirectory="PreserveNewest"/>
   </ItemGroup>
 
 </Project>

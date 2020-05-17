@@ -31,9 +31,9 @@ namespace NezTest2
             player.AddComponent(new Player());
             player.AddComponent(new TiledMapMover(tiledTmx.GetLayer<TmxLayer>("1")));
 
-            Entity a = scene.CreateEntity("2", new Vector2(240, 200));
-            a.AddComponent(new Player());
-            a.AddComponent(new TiledMapMover(tiledTmx.GetLayer<TmxLayer>("1")));
+            Entity slime = scene.CreateEntity("2", new Vector2(240, 200));
+            slime.AddComponent(new Slime());
+            slime.AddComponent(new TiledMapMover(tiledTmx.GetLayer<TmxLayer>("1")));
 
             //Scene.Camera.AddComponent(new FollowCamera(player));
 

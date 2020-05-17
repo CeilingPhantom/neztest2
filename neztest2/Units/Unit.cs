@@ -40,10 +40,10 @@ namespace NezTest2.Units
         protected float DamageLow = 30f;
         protected float DamageHigh = 40f;
 
-        public Unit(string name, string contentPath, Vector2 tiledColliderTopLeft, float tiledColliderWidth, float tiledColliderHeight)
+        public Unit(string name, Vector2 tiledColliderTopLeft, float tiledColliderWidth, float tiledColliderHeight)
         {
             Name = name;
-            ContentPath = contentPath;
+            ContentPath = $"Content/Units/{Name}";
             TiledColliderTopLeft = tiledColliderTopLeft;
             TiledColliderWidth = tiledColliderWidth;
             TiledColliderHeight = tiledColliderHeight;
@@ -55,9 +55,6 @@ namespace NezTest2.Units
         {
             Animator = Entity.AddComponent(new SpriteAnimator());
             AddAnimations();
-
-            using (var stream = TitleContainer.OpenStream($"{ContentPath}/{Name}.tsx"))
-                AnimationFrames = new TmxTileset().LoadTmxTileset(null, System.Xml.Linq.XDocument.Load(stream).Element("tileset"), 1, ContentPath);
 
             AddColliders();
 
@@ -88,13 +85,19 @@ namespace NezTest2.Units
                     foreach (var colliderObj in frame.ObjectGroups["collision"].Objects)
                     {
                         var collider = Entity.AddComponent(new BoxCollider(colliderObj.X - AnimationFrames.TileWidth / 2, colliderObj.Y - AnimationFrames.TileHeight / 2, colliderObj.Width, colliderObj.Height));
-                        Flags.SetFlagExclusive(ref collider.CollidesWithLayers, 1);
-                        Flags.SetFlagExclusive(ref collider.PhysicsLayer, 1);
                         collider.SetEnabled(false);
                         if (colliderObj.Name.Equals("entity"))
+                        {
                             entityColliders.Add(collider);
+                            Flags.SetFlagExclusive(ref collider.CollidesWithLayers, 1);
+                            Flags.SetFlagExclusive(ref collider.PhysicsLayer, 1);
+                        }
                         else if (colliderObj.Name.Equals("attack"))
+                        {
                             attackColliders.Add(collider);
+                            Flags.SetFlagExclusive(ref collider.CollidesWithLayers, 1);
+                            Flags.SetFlagExclusive(ref collider.PhysicsLayer, 2);
+                        }
                     }
                 EntityColliders.Add(img, entityColliders);
                 AttackColliders.Add(img, attackColliders);
@@ -110,61 +113,60 @@ namespace NezTest2.Units
             UpdateAnimations();
             UpdateMovement();
 
-            UpdateActiveEntityColliders();
-            UpdateActiveAttackColliders();
-            PrevAnimationFrameName = Animations[Animator.CurrentAnimationName][Animator.CurrentFrame];
+            UpdateColliders();
 
             CheckAttackUnit();
         }
 
         protected abstract void UpdateAnimations();
 
-        protected abstract void UpdateMovement();
-
-        protected void UpdateActiveEntityColliders()
+        protected virtual void UpdateMovement()
         {
-            if (PrevAnimationFrameName != null)
+            // falling motion
+            Velocity.Y += Gravity * Time.DeltaTime;
+
+            Mover.Move(Velocity * Time.DeltaTime, TiledCollider, TiledCollisionState);
+
+            if (TiledCollisionState.Below || TiledCollisionState.Above)
+                Velocity.Y = 0;
+        }
+
+        protected void UpdateColliders()
+        {
+            if (PrevAnimationFrameName != null) {
+                if (PrevCollidersFlipX)
+                    ColliderFlipX(TiledCollider);
                 foreach (var collider in EntityColliders[PrevAnimationFrameName])
                 {
                     if (PrevCollidersFlipX)
                         ColliderFlipX(collider);
                     collider.SetEnabled(false);
                 }
-
-            var img = Animations[Animator.CurrentAnimationName][Animator.CurrentFrame];
-            foreach (var collider in EntityColliders[img])
-            {
-                if (Animator.FlipX)
-                {
-                    ColliderFlipX(collider);
-                    PrevCollidersFlipX = true;
-                }
-                else
-                    PrevCollidersFlipX = false;
-                collider.SetEnabled(true);
-            }
-        }
-
-        protected void UpdateActiveAttackColliders()
-        {
-            if (PrevAnimationFrameName != null)
                 foreach (var collider in AttackColliders[PrevAnimationFrameName])
                 {
                     if (PrevCollidersFlipX)
                         ColliderFlipX(collider);
                     collider.SetEnabled(false);
                 }
+            }
 
-            var img = Animations[Animator.CurrentAnimationName][Animator.CurrentFrame];
-            foreach (var collider in AttackColliders[img])
+            PrevAnimationFrameName = Animations[Animator.CurrentAnimationName][Animator.CurrentFrame];
+            PrevCollidersFlipX = false;
+            if (Animator.FlipX)
             {
-                if (Animator.FlipX)
-                {
+                PrevCollidersFlipX = true;
+                ColliderFlipX(TiledCollider);
+            }
+            foreach (var collider in EntityColliders[PrevAnimationFrameName])
+            {
+                if (PrevCollidersFlipX)
                     ColliderFlipX(collider);
-                    PrevCollidersFlipX = true;
-                }
-                else
-                    PrevCollidersFlipX = false;
+                collider.SetEnabled(true);
+            }
+            foreach (var collider in AttackColliders[PrevAnimationFrameName])
+            {
+                if (PrevCollidersFlipX)
+                    ColliderFlipX(collider);
                 collider.SetEnabled(true);
             }
         }
@@ -204,6 +206,7 @@ namespace NezTest2.Units
         public virtual void Attacked(float damage)
         {
             Health -= damage;
+            System.Diagnostics.Debug.WriteLine(Health);
             if (Health < 0)
                 Entity.Destroy();
         }
