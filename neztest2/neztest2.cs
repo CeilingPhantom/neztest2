@@ -1,9 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Nez;
 using Nez.Tiled;
 using NezTest2.Units;
+using NezTest2.Util;
 
 namespace NezTest2
 {
@@ -26,16 +25,21 @@ namespace NezTest2
             var tiledTmx = scene.Content.LoadTiledMap("Content/test.tmx");
             var tiledMap = scene.CreateEntity("tiled-map");
             tiledMap.AddComponent(new TiledMapRenderer(tiledTmx, "1"));
+            tiledMap.AddComponent(new CameraBounds(Vector2.Zero, new Vector2(tiledTmx.TileWidth * tiledTmx.Width, tiledTmx.TileWidth * tiledTmx.Height)));
 
-            Entity player = scene.CreateEntity("player", new Vector2(20, 200));
+            Entity player = scene.CreateEntity("player", new Vector2(50, 200));
             player.AddComponent(new Player());
             player.AddComponent(new TiledMapMover(tiledTmx.GetLayer<TmxLayer>("1")));
 
-            Entity slime = scene.CreateEntity("2", new Vector2(240, 200));
+            Entity slime = scene.CreateEntity("slime", new Vector2(300, 200));
             slime.AddComponent(new Slime());
             slime.AddComponent(new TiledMapMover(tiledTmx.GetLayer<TmxLayer>("1")));
 
-            //Scene.Camera.AddComponent(new FollowCamera(player));
+            Entity slime2 = slime.Clone(new Vector2(350, 200));
+            slime2.Name = "slime2";
+            scene.AddEntity(slime2);
+
+            scene.Camera.AddComponent(new FollowCamera(player));
 
             Scene = scene;
         }

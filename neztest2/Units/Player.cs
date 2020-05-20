@@ -5,6 +5,7 @@ using Nez;
 using Nez.Sprites;
 using Nez.Textures;
 using Nez.Tiled;
+using NezTest2.Util;
 
 namespace NezTest2.Units
 {
@@ -25,14 +26,14 @@ namespace NezTest2.Units
                 using (var stream = TitleContainer.OpenStream($"{ContentPath}/{Name}.tsx"))
                     PlayerAnimationFrames = new TmxTileset().LoadTmxTileset(null, System.Xml.Linq.XDocument.Load(stream).Element("tileset"), 1, ContentPath);
             AnimationFrames = PlayerAnimationFrames;
+
+            Health = 10000;
         }
 
         public override void OnAddedToEntity()
         {
             base.OnAddedToEntity();
-
-            animationChainer = Entity.AddComponent(new AnimationChainer());
-
+            SetupAnimationChainer();
             SetupInput();
         }
 
@@ -198,6 +199,13 @@ namespace NezTest2.Units
             }, 10));
         }
 
+        void SetupAnimationChainer()
+        {
+            animationChainer = Entity.AddComponent(new AnimationChainer());
+            animationChainer.AddChainableAnimation("attack1");
+            animationChainer.AddChainableAnimation("attack2");
+        }
+
         void SetupInput()
         {
             xAxisInput = new VirtualIntegerAxis();
@@ -215,15 +223,14 @@ namespace NezTest2.Units
 
         protected override void UpdateAnimations()
         {
-            string animation;
-            var loopMode = SpriteAnimator.LoopMode.Loop;
-
-            if (Animator.IsCompleted &&
-                Animator.CurrentAnimationName.Contains("attack"))
+            if (Animator.IsCompleted && animationChainer.IsChainableAnimation(Animator.CurrentAnimationName))
                 animationChainer.Start(Animator.CurrentAnimationName);
 
-            if (!AnimationLock || (AnimationLock && Animator.IsCompleted))
+            if (!AnimationLock || Animator.IsCompleted)
             {
+                string animation;
+                var loopMode = SpriteAnimator.LoopMode.Loop;
+
                 // normal attack
                 if (primaryAttackInput.IsDown)
                 {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Nez;
 using Nez.Sprites;
@@ -12,12 +13,24 @@ namespace NezTest2.Units
         static TmxTileset SlimeAnimationFrames;
         static Dictionary<string, string[]> SlimeAnimations;
 
+        Entity player;
+        float distanceSlimeFrontToPlayer;
+
         public Slime() : base("slime", new Vector2(4, 3), 24, 20)
         {
             if (SlimeAnimationFrames == null)
                 using (var stream = TitleContainer.OpenStream($"{ContentPath}/{Name}.tsx"))
                     SlimeAnimationFrames = new TmxTileset().LoadTmxTileset(null, System.Xml.Linq.XDocument.Load(stream).Element("tileset"), 1, ContentPath);
             AnimationFrames = SlimeAnimationFrames;
+
+            Speed = 40f;
+            Health = 50;
+        }
+
+        public override void OnAddedToEntity()
+        {
+            base.OnAddedToEntity();
+            player = Entity.Scene.FindEntity("player");
         }
 
         protected override void AddAnimations()
@@ -121,39 +134,77 @@ namespace NezTest2.Units
 
         protected override void UpdateAnimations()
         {
-            var animation = "idle";
-            var playerNearby = PlayerNearby();
-            if (playerNearby != 0)
+            if (!AnimationLock || Animator.IsCompleted)
             {
-                animation = "move";
-                if (playerNearby == 1)
-                    Animator.FlipX = true;
-                else
-                    Animator.FlipX = false;
-            }
+                string animation;
+                var loopMode = SpriteAnimator.LoopMode.Loop;
 
-            if (!Animator.IsAnimationActive(animation))
-                Animator.Play(animation);
+                if (PlayerNearby())
+                {
+                    if (distanceSlimeFrontToPlayer != 0)
+                    {
+                        animation = "move";
+                        AnimationLock = false;
+                        MovementLock = false;
+                        if (distanceSlimeFrontToPlayer > 0)
+                            Animator.FlipX = true;
+                        else
+                            Animator.FlipX = false;
+                    }
+                    else
+                    {
+                        animation = "attack";
+                        AnimationLock = true;
+                        MovementLock = true;
+                        loopMode = SpriteAnimator.LoopMode.Once;
+                        UnitsCurrAnimationHasAttacked.Clear();
+                    }
+                }
+                else
+                {
+                    animation = "idle";
+                    AnimationLock = false;
+                    MovementLock = false;
+                }
+
+                if (!Animator.IsAnimationActive(animation) || (Animator.IsAnimationActive("attack") && Animator.IsCompleted))
+                    Animator.Play(animation, loopMode);
+            }
         }
 
         protected override void UpdateMovement()
         {
-            Velocity.X = PlayerNearby() * Speed;
+            Velocity.X = 0;
+            if (!MovementLock)
+            {
+                if (distanceSlimeFrontToPlayer != 0)
+                    Velocity.X = distanceSlimeFrontToPlayer / Math.Abs(distanceSlimeFrontToPlayer) * Speed;
+            }
 
             base.UpdateMovement();
         }
 
-        int PlayerNearby()
+        bool PlayerNearby()
         {
-            var d = Entity.Transform.Position - Entity.Scene.FindEntity("player").Transform.Position;
-            if (d.Length() < 200)
+            distanceSlimeFrontToPlayer = 0;
+            if (player != null)
             {
-                if (Entity.Transform.Position.X < Entity.Scene.FindEntity("player").Transform.Position.X)
-                    return 1;
-                else if (Entity.Transform.Position.X > Entity.Scene.FindEntity("player").Transform.Position.X)
-                    return -1;
+                var pos1 = Entity.Transform.Position + (Animator.FlipX ? 1 : -1) * Vector2.UnitX * TiledColliderWidth / 4;
+                var pos2 = player.Transform.Position;
+                var d = pos1 - pos2;
+                if (d.Length() < 200)
+                {
+                    if (d.Length() > player.GetComponent<BoxCollider>().Width / 2)
+                    {
+                        if (Entity.Transform.Position.X < pos2.X)
+                            distanceSlimeFrontToPlayer = d.Length();
+                        else if (Entity.Transform.Position.X > pos2.X)
+                            distanceSlimeFrontToPlayer = -d.Length();
+                    }
+                    return true;
+                }
             }
-            return 0;
+            return false;
         }
     }
 }

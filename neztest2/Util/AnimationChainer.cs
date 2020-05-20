@@ -1,15 +1,20 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using Nez;
 
-namespace NezTest2
+namespace NezTest2.Util
 {
     public class AnimationChainer : Component, IUpdatable
     {
+        List<string> chainableAnimations = new List<string>();
         public string PrevAnimation { private set; get; }
         float elapsedTime = -1;
         readonly static float maxTime = 0.3f;
 
         public AnimationChainer() => SetUpdateOrder(-1);
+
+        public void AddChainableAnimation(string animation) => chainableAnimations.Add(animation);
+
+        public bool IsChainableAnimation(string animation) => chainableAnimations.Contains(animation);
 
         public void Start(string prevAnimation)
         {

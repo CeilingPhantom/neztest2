@@ -3,7 +3,7 @@
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <image width="32" height="25" source="slime-attack-0.png"/>
-  <objectgroup draworder="index" id="2">
+  <objectgroup draworder="index" id="2" name="collision">
    <object id="1" name="entity" x="2" y="21" width="28" height="3"/>
    <object id="2" name="entity" x="7" y="17" width="22" height="4"/>
    <object id="3" name="entity" x="8" y="13" width="20" height="4"/>
@@ -11,7 +11,7 @@
  </tile>
  <tile id="1">
   <image width="32" height="25" source="slime-attack-1.png"/>
-  <objectgroup draworder="index" id="2">
+  <objectgroup draworder="index" id="2" name="collision">
    <object id="1" name="entity" x="2" y="21" width="29" height="3"/>
    <object id="2" name="entity" x="9" y="17" width="22" height="4"/>
    <object id="3" name="entity" x="10" y="13" width="20" height="4"/>
@@ -19,7 +19,7 @@
  </tile>
  <tile id="2">
   <image width="32" height="25" source="slime-attack-2.png"/>
-  <objectgroup draworder="index" id="2">
+  <objectgroup draworder="index" id="2" name="collision">
    <object id="1" name="entity" x="2" y="22" width="28" height="2"/>
    <object id="2" name="entity" x="6" y="20" width="23" height="2"/>
    <object id="3" name="entity" x="6" y="16" width="22" height="4"/>
@@ -34,7 +34,7 @@
  </tile>
  <tile id="3">
   <image width="32" height="25" source="slime-attack-3.png"/>
-  <objectgroup draworder="index" id="2">
+  <objectgroup draworder="index" id="2" name="collision">
    <object id="1" name="entity" x="3" y="22" width="27" height="2"/>
    <object id="2" name="entity" x="3" y="20" width="26" height="2"/>
    <object id="3" name="entity" x="3" y="18" width="25" height="2"/>
@@ -49,7 +49,7 @@
  </tile>
  <tile id="4">
   <image width="32" height="25" source="slime-attack-4.png"/>
-  <objectgroup draworder="index" id="2">
+  <objectgroup draworder="index" id="2" name="collision">
    <object id="1" name="entity" x="3" y="22" width="27" height="2"/>
    <object id="2" name="entity" x="3" y="20" width="26" height="2"/>
    <object id="3" name="entity" x="2" y="16" width="26" height="4"/>
@@ -70,7 +70,7 @@
  </tile>
  <tile id="9">
   <image width="32" height="25" source="slime-hurt-0.png"/>
-  <objectgroup draworder="index" id="2">
+  <objectgroup draworder="index" id="2" name="collision">
    <object id="1" name="entity" x="2" y="22" width="28" height="2"/>
    <object id="2" name="entity" x="6" y="20" width="24" height="2"/>
    <object id="4" name="entity" x="9" y="14" width="21" height="6"/>
@@ -79,7 +79,7 @@
  </tile>
  <tile id="10">
   <image width="32" height="25" source="slime-hurt-1.png"/>
-  <objectgroup draworder="index" id="2">
+  <objectgroup draworder="index" id="2" name="collision">
    <object id="1" name="entity" x="2" y="22" width="28" height="2"/>
    <object id="2" name="entity" x="6" y="20" width="24" height="2"/>
    <object id="3" name="entity" x="9" y="16" width="21" height="4"/>
@@ -88,7 +88,7 @@
  </tile>
  <tile id="11">
   <image width="32" height="25" source="slime-hurt-2.png"/>
-  <objectgroup draworder="index" id="2">
+  <objectgroup draworder="index" id="2" name="collision">
    <object id="1" name="entity" x="2" y="22" width="28" height="2"/>
    <object id="2" name="entity" x="5" y="19" width="25" height="3"/>
    <object id="3" name="entity" x="7" y="15" width="21" height="4"/>
@@ -97,7 +97,7 @@
  </tile>
  <tile id="12">
   <image width="32" height="25" source="slime-hurt-3.png"/>
-  <objectgroup draworder="index" id="2">
+  <objectgroup draworder="index" id="2" name="collision">
    <object id="1" name="entity" x="2" y="22" width="28" height="2"/>
    <object id="2" name="entity" x="5" y="19" width="25" height="3"/>
    <object id="3" name="entity" x="8" y="15" width="21" height="4"/>
@@ -141,7 +141,7 @@
  </tile>
  <tile id="17">
   <image width="32" height="25" source="slime-move-0.png"/>
-  <objectgroup draworder="index" id="2">
+  <objectgroup draworder="index" id="2" name="collision">
    <object id="1" name="entity" x="4" y="21" width="26" height="3"/>
    <object id="2" name="entity" x="4" y="19" width="23" height="2"/>
    <object id="3" name="entity" x="4" y="17" width="21" height="2"/>
@@ -151,7 +151,7 @@
  </tile>
  <tile id="18">
   <image width="32" height="25" source="slime-move-1.png"/>
-  <objectgroup draworder="index" id="2">
+  <objectgroup draworder="index" id="2" name="collision">
    <object id="1" name="entity" x="4" y="22" width="24" height="2"/>
    <object id="2" name="entity" x="5" y="18" width="21" height="4"/>
    <object id="3" name="entity" x="6" y="16" width="20" height="2"/>
@@ -161,7 +161,7 @@
  </tile>
  <tile id="19">
   <image width="32" height="25" source="slime-move-2.png"/>
-  <objectgroup draworder="index" id="2">
+  <objectgroup draworder="index" id="2" name="collision">
    <object id="1" name="entity" x="4" y="23" width="24" height="1"/>
    <object id="2" name="entity" x="5" y="15" width="21" height="8"/>
    <object id="3" name="entity" x="6" y="12" width="19" height="3"/>
@@ -169,7 +169,7 @@
  </tile>
  <tile id="20">
   <image width="32" height="25" source="slime-move-3.png"/>
-  <objectgroup draworder="index" id="2">
+  <objectgroup draworder="index" id="2" name="collision">
    <object id="1" name="entity" x="4" y="21" width="26" height="3"/>
    <object id="2" name="entity" x="4" y="16" width="21" height="5"/>
    <object id="3" name="entity" x="5" y="13" width="19" height="3"/>

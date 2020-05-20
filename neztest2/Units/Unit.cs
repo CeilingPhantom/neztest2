@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Nez;
 using Nez.Sprites;
@@ -22,6 +23,8 @@ namespace NezTest2.Units
         protected Dictionary<string, List<BoxCollider>> EntityColliders;
         protected Dictionary<string, List<BoxCollider>> AttackColliders;
 
+        List<Collider> allColliders;
+
         // UpdateAnimations() responsible for clearing this list when an "attack" animation starts
         protected List<Unit> UnitsCurrAnimationHasAttacked = new List<Unit>();
 
@@ -36,9 +39,9 @@ namespace NezTest2.Units
         protected float JumpHeight = 50f;
         protected float Gravity = 600f;
 
-        protected float Health = 100f;
-        protected float DamageLow = 30f;
-        protected float DamageHigh = 40f;
+        protected int Health = 100;
+        protected int DamageLow = 30;
+        protected int DamageHigh = 40;
 
         public Unit(string name, Vector2 tiledColliderTopLeft, float tiledColliderWidth, float tiledColliderHeight)
         {
@@ -72,6 +75,7 @@ namespace NezTest2.Units
         protected void AddColliders()
         {
             TiledCollider = Entity.AddComponent(new BoxCollider(TiledColliderTopLeft.X - AnimationFrames.TileWidth / 2, TiledColliderTopLeft.Y - AnimationFrames.TileHeight / 2, TiledColliderWidth, TiledColliderHeight));
+            allColliders = new List<Collider> { TiledCollider };
 
             EntityColliders = new Dictionary<string, List<BoxCollider>>();
             AttackColliders = new Dictionary<string, List<BoxCollider>>();
@@ -101,6 +105,9 @@ namespace NezTest2.Units
                     }
                 EntityColliders.Add(img, entityColliders);
                 AttackColliders.Add(img, attackColliders);
+
+                allColliders.AddRange(entityColliders);
+                allColliders.AddRange(attackColliders);
             }
         }
 
@@ -175,35 +182,34 @@ namespace NezTest2.Units
         {
             if (Animator.CurrentAnimationName.Contains("attack"))
             {
-                var excludedColliders = new List<Collider> { TiledCollider };
-                EntityColliders[PrevAnimationFrameName].ForEach(collider => excludedColliders.Add(collider));
-                AttackColliders[PrevAnimationFrameName].ForEach(collider => excludedColliders.Add(collider));
                 foreach (var collider in AttackColliders[PrevAnimationFrameName])
                 {
-                    var res = new CollisionResult();
-                    if (collider.CollidesWithAnyBut(excludedColliders, out res))
+                    if (collider.CollidesWithAnyBut(allColliders, out List<CollisionResult> results))
                     {
-                        var unit = res.Collider.Entity.GetComponent<Unit>();
-                        if (unit != null && !UnitsCurrAnimationHasAttacked.Contains(unit))
+                        foreach (CollisionResult result in results)
                         {
-                            AttackUnit(unit);
-                            UnitsCurrAnimationHasAttacked.Add(unit);
+                            var unit = result.Collider.Entity.GetComponent<Unit>();
+                            if (unit != null && !UnitsCurrAnimationHasAttacked.Contains(unit))
+                            {
+                                AttackUnit(unit);
+                                UnitsCurrAnimationHasAttacked.Add(unit);
+                            }
                         }
                     }
                 }
             }
         }
 
+        protected virtual void AttackUnit(Unit unit)
+        {
+            unit.Attacked(Nez.Random.Range(DamageLow, DamageHigh));
+        }
+
         #endregion
 
         protected void ColliderFlipX(Collider collider) => collider.SetLocalOffset(new Vector2(-collider.LocalOffset.X, collider.LocalOffset.Y));
 
-        protected virtual void AttackUnit(Unit unit)
-        {
-            unit.Attacked(Random.Range(DamageLow, DamageHigh));
-        }
-
-        public virtual void Attacked(float damage)
+        public virtual void Attacked(int damage)
         {
             Health -= damage;
             System.Diagnostics.Debug.WriteLine(Health);
