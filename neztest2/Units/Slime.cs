@@ -13,8 +13,18 @@ namespace NezTest2.Units
         static TmxTileset SlimeAnimationFrames;
         static Dictionary<string, string[]> SlimeAnimations;
 
+        enum ActionLock
+        {
+            None,
+            Attack,
+            Stunned,
+        }
+        ActionLock actionLock = ActionLock.None;
+
         Entity player;
         float distanceSlimeFrontToPlayer;
+        static float attackCooldownDuration = 2;
+        float attackCooldown = 0;
 
         public Slime() : base("slime", new Vector2(4, 3), 24, 20)
         {
@@ -23,7 +33,7 @@ namespace NezTest2.Units
                     SlimeAnimationFrames = new TmxTileset().LoadTmxTileset(null, System.Xml.Linq.XDocument.Load(stream).Element("tileset"), 1, ContentPath);
             AnimationFrames = SlimeAnimationFrames;
 
-            Speed = 40f;
+            Speed = 30f;
             Health = 50;
         }
 
@@ -61,7 +71,7 @@ namespace NezTest2.Units
                         }
                     },
                     {
-                        "hurt",
+                        "stunned",
                         new string[]
                         {
                             "slime-hurt-0.png",
@@ -109,13 +119,13 @@ namespace NezTest2.Units
                 new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["die"][2]}")),
                 new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["die"][3]}")),
             }, 10));
-            Animator.AddAnimation("hurt", new SpriteAnimation(new Sprite[]
+            Animator.AddAnimation("stunned", new SpriteAnimation(new Sprite[]
             {
-                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["hurt"][0]}")),
-                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["hurt"][1]}")),
-                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["hurt"][2]}")),
-                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["hurt"][3]}")),
-            }, 10));
+                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["stunned"][0]}")),
+                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["stunned"][1]}")),
+                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["stunned"][2]}")),
+                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["stunned"][3]}")),
+            }, 5));
             Animator.AddAnimation("idle", new SpriteAnimation(new Sprite[]
             {
                 new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["idle"][0]}")),
@@ -129,14 +139,20 @@ namespace NezTest2.Units
                 new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["move"][1]}")),
                 new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["move"][2]}")),
                 new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["move"][3]}")),
-            }, 10));
+            }, 5));
         }
 
         protected override void UpdateAnimations()
         {
-            if (!AnimationLock || Animator.IsCompleted)
+            if (Animator.AnimationLoopMode == SpriteAnimator.LoopMode.Once && Animator.IsCompleted)
+                actionLock = ActionLock.None;
+
+            if (attackCooldown != 0)
+                attackCooldown -= Time.DeltaTime;
+
+            if (actionLock == ActionLock.None)
             {
-                string animation;
+                string animation = "idle";
                 var loopMode = SpriteAnimator.LoopMode.Loop;
 
                 if (PlayerNearby())
@@ -144,28 +160,23 @@ namespace NezTest2.Units
                     if (distanceSlimeFrontToPlayer != 0)
                     {
                         animation = "move";
-                        AnimationLock = false;
-                        MovementLock = false;
+                        actionLock = ActionLock.None;
                         if (distanceSlimeFrontToPlayer > 0)
                             Animator.FlipX = true;
                         else
                             Animator.FlipX = false;
                     }
-                    else
+                    else if (attackCooldown <= 0)
                     {
                         animation = "attack";
-                        AnimationLock = true;
-                        MovementLock = true;
+                        actionLock = ActionLock.Attack;
                         loopMode = SpriteAnimator.LoopMode.Once;
                         UnitsCurrAnimationHasAttacked.Clear();
+                        attackCooldown = attackCooldownDuration;
                     }
                 }
-                else
-                {
-                    animation = "idle";
-                    AnimationLock = false;
-                    MovementLock = false;
-                }
+                if (animation == "idle")
+                    actionLock = ActionLock.None;
 
                 if (!Animator.IsAnimationActive(animation) || (Animator.IsAnimationActive("attack") && Animator.IsCompleted))
                     Animator.Play(animation, loopMode);
@@ -175,7 +186,7 @@ namespace NezTest2.Units
         protected override void UpdateMovement()
         {
             Velocity.X = 0;
-            if (!MovementLock)
+            if (actionLock == ActionLock.None)
             {
                 if (distanceSlimeFrontToPlayer != 0)
                     Velocity.X = distanceSlimeFrontToPlayer / Math.Abs(distanceSlimeFrontToPlayer) * Speed;
@@ -205,6 +216,24 @@ namespace NezTest2.Units
                 }
             }
             return false;
+        }
+
+        protected override void AttackUnit(Unit unit)
+        {
+            if (unit.Entity.GetComponent<Player>() != null)
+                base.AttackUnit(unit);
+        }
+
+        public override void Attacked(Unit unit, int damage)
+        {
+            Stunned();
+            base.Attacked(unit, damage);
+        }
+
+        public override void Stunned()
+        {
+            actionLock = ActionLock.Stunned;
+            Animator.Play("stunned", SpriteAnimator.LoopMode.Once);
         }
     }
 }

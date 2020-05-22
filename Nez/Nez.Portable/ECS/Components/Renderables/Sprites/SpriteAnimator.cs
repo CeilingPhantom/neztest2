@@ -89,7 +89,7 @@ namespace Nez.Sprites
 		readonly Dictionary<string, SpriteAnimation> _animations = new Dictionary<string, SpriteAnimation>();
 
 		float _elapsedTime;
-		LoopMode _loopMode;
+		public LoopMode AnimationLoopMode { get; private set; }
 
 
 		public SpriteAnimator()
@@ -111,8 +111,8 @@ namespace Nez.Sprites
 			var time = Math.Abs(_elapsedTime);
 
 			// Once and PingPongOnce reset back to Time = 0 once they complete
-			if (_loopMode == LoopMode.Once && time > iterationDuration ||
-				_loopMode == LoopMode.PingPongOnce && time > pingPongIterationDuration)
+			if (AnimationLoopMode == LoopMode.Once && time > iterationDuration ||
+				AnimationLoopMode == LoopMode.PingPongOnce && time > pingPongIterationDuration)
 			{
 				AnimationState = State.Completed;
 				_elapsedTime = 0;
@@ -122,7 +122,7 @@ namespace Nez.Sprites
 				return;
 			}
 
-			if (_loopMode == LoopMode.ClampForever && time > iterationDuration)
+			if (AnimationLoopMode == LoopMode.ClampForever && time > iterationDuration)
 			{
 				AnimationState = State.Completed;
 				CurrentFrame = animation.Sprites.Length - 1;
@@ -134,7 +134,7 @@ namespace Nez.Sprites
 			// figure out which frame we are on
 			int i = Mathf.FloorToInt(time / secondsPerFrame);
 			int n = animation.Sprites.Length;
-			if (n > 2 && (_loopMode == LoopMode.PingPong || _loopMode == LoopMode.PingPongOnce))
+			if (n > 2 && (AnimationLoopMode == LoopMode.PingPong || AnimationLoopMode == LoopMode.PingPongOnce))
 			{
 				// create a pingpong frame
 				int maxIndex = n - 1;
@@ -191,7 +191,7 @@ namespace Nez.Sprites
 
 			Sprite = CurrentAnimation.Sprites[0];
 			_elapsedTime = 0;
-			_loopMode = loopMode ?? LoopMode.Loop;
+			AnimationLoopMode = loopMode ?? LoopMode.Loop;
 		}
 
 		/// <summary>

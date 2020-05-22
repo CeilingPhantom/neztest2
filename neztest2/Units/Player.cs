@@ -14,6 +14,13 @@ namespace NezTest2.Units
         static TmxTileset PlayerAnimationFrames;
         static Dictionary<string, string[]> PlayerAnimations;
 
+        enum ActionLock
+        {
+            None,
+            Attack,
+        }
+        ActionLock actionLock = ActionLock.None;
+
         AnimationChainer animationChainer;
 
         VirtualIntegerAxis xAxisInput;
@@ -223,10 +230,13 @@ namespace NezTest2.Units
 
         protected override void UpdateAnimations()
         {
+            if (Animator.AnimationLoopMode == SpriteAnimator.LoopMode.Once && Animator.IsCompleted)
+                actionLock = ActionLock.None;
+
             if (Animator.IsCompleted && animationChainer.IsChainableAnimation(Animator.CurrentAnimationName))
                 animationChainer.Start(Animator.CurrentAnimationName);
 
-            if (!AnimationLock || Animator.IsCompleted)
+            if (actionLock == ActionLock.None)
             {
                 string animation;
                 var loopMode = SpriteAnimator.LoopMode.Loop;
@@ -243,8 +253,7 @@ namespace NezTest2.Units
                             animation = "attack3";
                     }
                     animationChainer.End();
-                    AnimationLock = true;
-                    MovementLock = true;
+                    actionLock = ActionLock.Attack;
                     loopMode = SpriteAnimator.LoopMode.Once;
                     UnitsCurrAnimationHasAttacked.Clear();
                 }
@@ -252,8 +261,7 @@ namespace NezTest2.Units
                 else if ((TiledCollisionState.Below && jumpInput.IsPressed) || (!TiledCollisionState.Below && Velocity.Y <= 0))
                 {
                     animation = "jump";
-                    AnimationLock = false;
-                    MovementLock = false;
+                    actionLock = ActionLock.None;
                     loopMode = SpriteAnimator.LoopMode.ClampForever;
                     if (Velocity.X < 0)
                         Animator.FlipX = true;
@@ -264,8 +272,7 @@ namespace NezTest2.Units
                 else if (!TiledCollisionState.Below && Velocity.Y > 0)
                 {
                     animation = "fall";
-                    AnimationLock = false;
-                    MovementLock = false;
+                    actionLock = ActionLock.None;
                     loopMode = SpriteAnimator.LoopMode.ClampForever;
                     if (Velocity.X < 0)
                         Animator.FlipX = true;
@@ -276,8 +283,7 @@ namespace NezTest2.Units
                 else if (Velocity.X != 0)
                 {
                     animation = "run";
-                    AnimationLock = false;
-                    MovementLock = false;
+                    actionLock = ActionLock.None;
                     if (Velocity.X < 0)
                         Animator.FlipX = true;
                     else
@@ -287,8 +293,7 @@ namespace NezTest2.Units
                 else
                 {
                     animation = "idle";
-                    AnimationLock = false;
-                    MovementLock = false;
+                    actionLock = ActionLock.None;
                 }
 
                 if (!Animator.IsAnimationActive(animation))
@@ -299,7 +304,7 @@ namespace NezTest2.Units
         protected override void UpdateMovement()
         {
             Velocity.X = 0;
-            if (!MovementLock)
+            if (actionLock == ActionLock.None)
             {
                 if (xAxisInput.Value < 0)
                     Velocity.X = -Speed;

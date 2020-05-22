@@ -14,7 +14,6 @@ namespace NezTest2.Units
 
         protected Dictionary<string, string[]> Animations;
         protected SpriteAnimator Animator;
-        protected bool AnimationLock, MovementLock = false;
 
         protected TmxTileset AnimationFrames;
 
@@ -202,19 +201,30 @@ namespace NezTest2.Units
 
         protected virtual void AttackUnit(Unit unit)
         {
-            unit.Attacked(Nez.Random.Range(DamageLow, DamageHigh));
+            unit.Attacked(this, Nez.Random.Range(DamageLow, DamageHigh));
         }
 
         #endregion
 
         protected void ColliderFlipX(Collider collider) => collider.SetLocalOffset(new Vector2(-collider.LocalOffset.X, collider.LocalOffset.Y));
 
-        public virtual void Attacked(int damage)
+        /// <summary>
+        /// called when attacked by a unit
+        /// </summary>
+        /// <param name="unit"></param>
+        /// <param name="damage"></param>
+        public virtual void Attacked(Unit unit, int damage)
         {
             Health -= damage;
             System.Diagnostics.Debug.WriteLine(Health);
-            if (Health < 0)
-                Entity.Destroy();
+            if (Health <= 0)
+                Die();
         }
+
+        public virtual void Stunned() { }
+
+        protected virtual void Invincible() { }
+
+        protected virtual void Die() { }
     }
 }
