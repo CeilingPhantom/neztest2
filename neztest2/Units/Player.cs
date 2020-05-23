@@ -34,7 +34,7 @@ namespace NezTest2.Units
                     PlayerAnimationFrames = new TmxTileset().LoadTmxTileset(null, System.Xml.Linq.XDocument.Load(stream).Element("tileset"), 1, ContentPath);
             AnimationFrames = PlayerAnimationFrames;
 
-            Health = 10000;
+            Health = 100;
         }
 
         public override void OnAddedToEntity()
@@ -89,6 +89,19 @@ namespace NezTest2.Units
                             "adventurer-attack3-03.png",
                             "adventurer-attack3-04.png",
                             "adventurer-attack3-05.png",
+                        }
+                    },
+                    {
+                        "die",
+                        new string[]
+                        {
+                            "adventurer-die-00.png",
+                            "adventurer-die-01.png",
+                            "adventurer-die-02.png",
+                            "adventurer-die-03.png",
+                            "adventurer-die-04.png",
+                            "adventurer-die-05.png",
+                            "adventurer-die-06.png",
                         }
                     },
                     {
@@ -170,6 +183,16 @@ namespace NezTest2.Units
                 new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["attack3"][4]}")),
                 new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["attack3"][5]}")),
             }, 10));
+            Animator.AddAnimation("die", new SpriteAnimation(new Sprite[]
+            {
+                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["die"][0]}")),
+                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["die"][1]}")),
+                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["die"][2]}")),
+                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["die"][3]}")),
+                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["die"][4]}")),
+                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["die"][5]}")),
+                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["die"][5]}")),
+            }, 5));
             Animator.AddAnimation("fall", new SpriteAnimation(new Sprite[]
             {
                 new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["fall"][0]}")),
@@ -230,7 +253,7 @@ namespace NezTest2.Units
 
         protected override void UpdateAnimations()
         {
-            if (Animator.AnimationLoopMode == SpriteAnimator.LoopMode.Once && Animator.IsCompleted)
+            if (Animator.IsCompleted)
                 actionLock = ActionLock.None;
 
             if (Animator.IsCompleted && animationChainer.IsChainableAnimation(Animator.CurrentAnimationName))
@@ -254,7 +277,7 @@ namespace NezTest2.Units
                     }
                     animationChainer.End();
                     actionLock = ActionLock.Attack;
-                    loopMode = SpriteAnimator.LoopMode.Once;
+                    loopMode = SpriteAnimator.LoopMode.ClampForever;
                     UnitsCurrAnimationHasAttacked.Clear();
                 }
                 // jumping
@@ -316,6 +339,17 @@ namespace NezTest2.Units
             }
 
             base.UpdateMovement();
+        }
+
+        public override void Stunned() { }
+
+        protected override bool Die()
+        {
+            if (!Animator.IsAnimationActive("die"))
+                Animator.Play("die", SpriteAnimator.LoopMode.ClampForever);
+            if (Animator.IsCompleted)
+                return true;
+            return false;
         }
     }
 }

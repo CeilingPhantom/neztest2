@@ -23,19 +23,25 @@ namespace NezTest2
             var scene = Scene.CreateWithDefaultRenderer(Color.CornflowerBlue);
 
             var tiledTmx = scene.Content.LoadTiledMap("Content/test.tmx");
-            var tiledMap = scene.CreateEntity("tiled-map");
-            tiledMap.AddComponent(new TiledMapRenderer(tiledTmx, "1"));
-            tiledMap.AddComponent(new CameraBounds(Vector2.Zero, new Vector2(tiledTmx.TileWidth * tiledTmx.Width, tiledTmx.TileWidth * tiledTmx.Height)));
+            var tiledEntity = scene.CreateEntity("tiled-map");
+            tiledEntity.AddComponent(new CameraBounds(Vector2.Zero, new Vector2(tiledTmx.TileWidth * tiledTmx.Width, tiledTmx.TileWidth * tiledTmx.Height)));
+
+            var tiledMap1 = tiledEntity.AddComponent(new TiledMapRenderer(tiledTmx, "1"));
+            tiledMap1.SetLayersToRender("1", "2", "3");
+
+            var tiledMap2 = tiledEntity.AddComponent(new TiledMapRenderer(tiledTmx));
+            tiledMap2.SetLayersToRender("0");
+            tiledMap2.RenderLayer = -1;
 
             Entity player = scene.CreateEntity("player", new Vector2(50, 200));
             player.AddComponent(new Player());
             player.AddComponent(new TiledMapMover(tiledTmx.GetLayer<TmxLayer>("1")));
 
-            Entity slime = scene.CreateEntity("slime", new Vector2(300, 200));
-            slime.AddComponent(new Slime());
-            slime.AddComponent(new TiledMapMover(tiledTmx.GetLayer<TmxLayer>("1")));
+            Entity slime1 = scene.CreateEntity("slime1", new Vector2(300, 200));
+            slime1.AddComponent(new Slime());
+            slime1.AddComponent(new TiledMapMover(tiledTmx.GetLayer<TmxLayer>("1")));
 
-            Entity slime2 = slime.Clone(new Vector2(350, 200));
+            Entity slime2 = slime1.Clone(new Vector2(350, 200));
             slime2.Name = "slime2";
             scene.AddEntity(slime2);
 

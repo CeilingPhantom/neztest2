@@ -34,13 +34,13 @@ namespace NezTest2.Units
         protected TiledMapMover.CollisionState TiledCollisionState;
         protected Vector2 Velocity = Vector2.Zero;
 
-        protected float Speed = 70f;
-        protected float JumpHeight = 50f;
-        protected float Gravity = 600f;
+        protected float Speed = 70;
+        protected float JumpHeight = 50;
+        protected float Gravity = 600;
 
         protected int Health = 100;
-        protected int DamageLow = 30;
-        protected int DamageHigh = 40;
+        protected float DamageLow = 30;
+        protected float DamageHigh = 40;
 
         public Unit(string name, Vector2 tiledColliderTopLeft, float tiledColliderWidth, float tiledColliderHeight)
         {
@@ -62,11 +62,6 @@ namespace NezTest2.Units
 
             Mover = Entity.GetComponent<TiledMapMover>();
             TiledCollisionState = new TiledMapMover.CollisionState();
-        }
-
-        public override void OnRemovedFromEntity()
-        {
-            base.OnRemovedFromEntity();
         }
 
         protected abstract void AddAnimations();
@@ -116,12 +111,17 @@ namespace NezTest2.Units
 
         public virtual void Update()
         {
-            UpdateAnimations();
-            UpdateMovement();
+            if (Health > 0)
+            {
+                UpdateAnimations();
+                UpdateMovement();
 
-            UpdateColliders();
+                UpdateColliders();
 
-            CheckAttackUnit();
+                CheckAttackUnit();
+            }
+            else if (Die())
+                Entity.Destroy();
         }
 
         protected abstract void UpdateAnimations();
@@ -201,7 +201,7 @@ namespace NezTest2.Units
 
         protected virtual void AttackUnit(Unit unit)
         {
-            unit.Attacked(this, Nez.Random.Range(DamageLow, DamageHigh));
+            unit.Attacked(this, (int) Math.Round(Nez.Random.Range(DamageLow, DamageHigh)));
         }
 
         #endregion
@@ -215,16 +215,21 @@ namespace NezTest2.Units
         /// <param name="damage"></param>
         public virtual void Attacked(Unit unit, int damage)
         {
-            Health -= damage;
-            System.Diagnostics.Debug.WriteLine(Health);
-            if (Health <= 0)
-                Die();
+            if (Health > 0)
+            {
+                Health -= damage;
+                System.Diagnostics.Debug.WriteLine(Health);
+                if (Health <= 0)
+                    Die();
+            }
         }
 
-        public virtual void Stunned() { }
+        public abstract void Stunned();
 
-        protected virtual void Invincible() { }
-
-        protected virtual void Die() { }
+        /// <summary>
+        /// returns true when death animation, etc have finished
+        /// </summary>
+        /// <returns></returns>
+        protected abstract bool Die();
     }
 }

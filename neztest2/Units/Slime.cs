@@ -33,7 +33,7 @@ namespace NezTest2.Units
                     SlimeAnimationFrames = new TmxTileset().LoadTmxTileset(null, System.Xml.Linq.XDocument.Load(stream).Element("tileset"), 1, ContentPath);
             AnimationFrames = SlimeAnimationFrames;
 
-            Speed = 30f;
+            Speed = 30;
             Health = 50;
         }
 
@@ -118,7 +118,7 @@ namespace NezTest2.Units
                 new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["die"][1]}")),
                 new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["die"][2]}")),
                 new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["die"][3]}")),
-            }, 10));
+            }, 5));
             Animator.AddAnimation("stunned", new SpriteAnimation(new Sprite[]
             {
                 new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["stunned"][0]}")),
@@ -144,7 +144,7 @@ namespace NezTest2.Units
 
         protected override void UpdateAnimations()
         {
-            if (Animator.AnimationLoopMode == SpriteAnimator.LoopMode.Once && Animator.IsCompleted)
+            if (Animator.IsCompleted)
                 actionLock = ActionLock.None;
 
             if (attackCooldown != 0)
@@ -170,7 +170,7 @@ namespace NezTest2.Units
                     {
                         animation = "attack";
                         actionLock = ActionLock.Attack;
-                        loopMode = SpriteAnimator.LoopMode.Once;
+                        loopMode = SpriteAnimator.LoopMode.ClampForever;
                         UnitsCurrAnimationHasAttacked.Clear();
                         attackCooldown = attackCooldownDuration;
                     }
@@ -198,7 +198,7 @@ namespace NezTest2.Units
         bool PlayerNearby()
         {
             distanceSlimeFrontToPlayer = 0;
-            if (player != null)
+            if (player != null && !player.IsDestroyed)
             {
                 var pos1 = Entity.Transform.Position + (Animator.FlipX ? 1 : -1) * Vector2.UnitX * TiledColliderWidth / 4;
                 var pos2 = player.Transform.Position;
@@ -233,7 +233,16 @@ namespace NezTest2.Units
         public override void Stunned()
         {
             actionLock = ActionLock.Stunned;
-            Animator.Play("stunned", SpriteAnimator.LoopMode.Once);
+            Animator.Play("stunned", SpriteAnimator.LoopMode.ClampForever);
+        }
+
+        protected override bool Die()
+        {
+            if (!Animator.IsAnimationActive("die"))
+                Animator.Play("die", SpriteAnimator.LoopMode.ClampForever);
+            if (Animator.IsCompleted)
+                return true;
+            return false;
         }
     }
 }
