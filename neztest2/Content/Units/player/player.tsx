@@ -435,7 +435,7 @@
  </tile>
  <tile id="85">
   <image width="50" height="37" source="adventurer-run-00.png"/>
-  <objectgroup draworder="index" id="2">
+  <objectgroup draworder="index" id="2" name="collision">
    <object id="1" name="entity" x="20" y="25" width="14" height="11"/>
    <object id="2" name="entity" x="24" y="23" width="8" height="2"/>
    <object id="3" name="entity" x="25" y="20" width="12" height="3"/>
@@ -445,7 +445,7 @@
  </tile>
  <tile id="86">
   <image width="50" height="37" source="adventurer-run-01.png"/>
-  <objectgroup draworder="index" id="2">
+  <objectgroup draworder="index" id="2" name="collision">
    <object id="1" name="entity" x="21" y="28" width="14" height="8"/>
    <object id="2" name="entity" x="24" y="23" width="9" height="5"/>
    <object id="3" name="entity" x="26" y="15" width="9" height="8"/>
@@ -454,7 +454,7 @@
  </tile>
  <tile id="87">
   <image width="50" height="37" source="adventurer-run-02.png"/>
-  <objectgroup draworder="index" id="2">
+  <objectgroup draworder="index" id="2" name="collision">
    <object id="1" name="entity" x="24" y="30" width="8" height="6"/>
    <object id="2" name="entity" x="26" y="25" width="6" height="5"/>
    <object id="3" name="entity" x="26" y="16" width="10" height="9"/>
@@ -463,17 +463,17 @@
  </tile>
  <tile id="88">
   <image width="50" height="37" source="adventurer-run-03.png"/>
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="20" y="24" width="14" height="12"/>
-   <object id="2" x="27" y="8" width="8" height="7"/>
-   <object id="3" x="25" y="15" width="11" height="4"/>
-   <object id="4" x="25" y="19" width="15" height="3"/>
-   <object id="5" x="25" y="22" width="8" height="2"/>
+  <objectgroup draworder="index" id="2" name="collision">
+   <object id="1" name="entity" x="20" y="24" width="14" height="12"/>
+   <object id="2" name="entity" x="27" y="8" width="8" height="7"/>
+   <object id="3" name="entity" x="25" y="15" width="11" height="4"/>
+   <object id="4" name="entity" x="25" y="19" width="15" height="3"/>
+   <object id="5" name="entity" x="25" y="22" width="8" height="2"/>
   </objectgroup>
  </tile>
  <tile id="89">
   <image width="50" height="37" source="adventurer-run-04.png"/>
-  <objectgroup draworder="index" id="2">
+  <objectgroup draworder="index" id="2" name="collision">
    <object id="1" name="entity" x="21" y="28" width="14" height="8"/>
    <object id="2" name="entity" x="24" y="26" width="9" height="2"/>
    <object id="3" name="entity" x="25" y="23" width="7" height="3"/>
@@ -485,7 +485,7 @@
  </tile>
  <tile id="90">
   <image width="50" height="37" source="adventurer-run-05.png"/>
-  <objectgroup draworder="index" id="2">
+  <objectgroup draworder="index" id="2" name="collision">
    <object id="1" name="entity" x="24" y="30" width="8" height="6"/>
    <object id="2" name="entity" x="26" y="25" width="6" height="5"/>
    <object id="3" name="entity" x="26" y="21" width="7" height="4"/>
@@ -501,15 +501,36 @@
  </tile>
  <tile id="93">
   <image width="50" height="37" source="adventurer-smrslt-00.png"/>
+  <objectgroup draworder="index" id="2" name="collision">
+   <object id="1" name="entity" x="21" y="23" width="12" height="3"/>
+   <object id="2" name="entity" x="23" y="14" width="10" height="9"/>
+   <object id="3" name="entity" x="24" y="8" width="9" height="6"/>
+  </objectgroup>
  </tile>
  <tile id="94">
   <image width="50" height="37" source="adventurer-smrslt-01.png"/>
+  <objectgroup draworder="index" id="2" name="collision">
+   <object id="1" name="entity" x="18" y="13" width="4" height="11"/>
+   <object id="2" name="entity" x="22" y="15" width="8" height="10"/>
+   <object id="3" name="entity" x="30" y="19" width="7" height="8"/>
+  </objectgroup>
  </tile>
  <tile id="95">
   <image width="50" height="37" source="adventurer-smrslt-02.png"/>
+  <objectgroup draworder="index" id="2" name="collision">
+   <object id="1" name="entity" x="23" y="11" width="10" height="4"/>
+   <object id="2" name="entity" x="22" y="15" width="10" height="9"/>
+   <object id="3" name="entity" x="20" y="24" width="8" height="6"/>
+  </objectgroup>
  </tile>
  <tile id="96">
   <image width="50" height="37" source="adventurer-smrslt-03.png"/>
+  <objectgroup draworder="index" id="2" name="collision">
+   <object id="1" name="entity" x="28" y="17" width="5" height="8"/>
+   <object id="2" name="entity" x="23" y="14" width="5" height="11"/>
+   <object id="3" name="entity" x="20" y="14" width="3" height="8"/>
+   <object id="4" name="entity" x="14" y="13" width="6" height="8"/>
+  </objectgroup>
  </tile>
  <tile id="97">
   <image width="50" height="37" source="adventurer-stand-00.png"/>

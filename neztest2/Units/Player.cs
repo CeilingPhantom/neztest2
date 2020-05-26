@@ -232,8 +232,9 @@ namespace NezTest2.Units
         void SetupAnimationChainer()
         {
             animationChainer = Entity.AddComponent(new AnimationChainer());
-            animationChainer.AddChainableAnimation("attack1");
-            animationChainer.AddChainableAnimation("attack2");
+
+            animationChainer.AddChainableAnimation("attack1", "attack2");
+            animationChainer.AddChainableAnimation("attack2", "attack3");
         }
 
         void SetupInput()

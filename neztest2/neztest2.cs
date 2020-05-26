@@ -1,8 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
 using Nez;
-using Nez.Tiled;
+using NezTest2.Scenes;
 using NezTest2.Units;
-using NezTest2.Util;
 
 namespace NezTest2
 {
@@ -11,6 +10,10 @@ namespace NezTest2
     /// </summary>
     public class NezTest2 : Core
     {
+        public static Dictionary<string, SceneTransition> Scenes { get; private set; }
+        static Player player;
+
+
         public NezTest2() : base(640, 640)
         {
             Window.AllowUserResizing = true;
@@ -20,34 +23,22 @@ namespace NezTest2
         {
             base.Initialize();
             Scene.SetDefaultDesignResolution(320, 320, Scene.SceneResolutionPolicy.ShowAllPixelPerfect);
-            var scene = Scene.CreateWithDefaultRenderer(Color.CornflowerBlue);
+            
+            Scenes = new Dictionary<string, SceneTransition>
+            {
+                { "1", new FadeTransition(() => new Scene1(player)) },
+            };
+            
+            Scene = new Scene1(player);
+        }
 
-            var tiledTmx = scene.Content.LoadTiledMap("Content/test.tmx");
-            var tiledEntity = scene.CreateEntity("tiled-map");
-            tiledEntity.AddComponent(new CameraBounds(Vector2.Zero, new Vector2(tiledTmx.TileWidth * tiledTmx.Width, tiledTmx.TileWidth * tiledTmx.Height)));
-
-            var tiledMap1 = tiledEntity.AddComponent(new TiledMapRenderer(tiledTmx, "1"));
-            tiledMap1.SetLayersToRender("1", "2", "3");
-
-            var tiledMap2 = tiledEntity.AddComponent(new TiledMapRenderer(tiledTmx));
-            tiledMap2.SetLayersToRender("0");
-            tiledMap2.RenderLayer = -1;
-
-            Entity player = scene.CreateEntity("player", new Vector2(50, 200));
-            player.AddComponent(new Player());
-            player.AddComponent(new TiledMapMover(tiledTmx.GetLayer<TmxLayer>("1")));
-
-            Entity slime1 = scene.CreateEntity("slime1", new Vector2(300, 200));
-            slime1.AddComponent(new Slime());
-            slime1.AddComponent(new TiledMapMover(tiledTmx.GetLayer<TmxLayer>("1")));
-
-            Entity slime2 = slime1.Clone(new Vector2(350, 200));
-            slime2.Name = "slime2";
-            scene.AddEntity(slime2);
-
-            scene.Camera.AddComponent(new FollowCamera(player));
-
-            Scene = scene;
+        public static Player UpdatePlayer()
+        {
+            if (player == null)
+                player = new Player();
+            else
+                player = (Player)player.Clone();
+            return player;
         }
     }
 }

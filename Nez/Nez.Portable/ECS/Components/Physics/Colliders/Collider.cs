@@ -349,7 +349,7 @@ namespace Nez
 				if (neighbor.IsTrigger)
 					continue;
 
-				if (!excludedColliders.Contains(neighbor) && CollidesWith(neighbor, out result))
+				if (excludedColliders != null && !excludedColliders.Contains(neighbor) && CollidesWith(neighbor, out result))
 					return true;
 			}
 

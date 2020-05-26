@@ -218,7 +218,6 @@ namespace NezTest2.Units
             if (Health > 0)
             {
                 Health -= damage;
-                System.Diagnostics.Debug.WriteLine(Health);
                 if (Health <= 0)
                     Die();
             }
