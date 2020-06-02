@@ -6,7 +6,7 @@ namespace NezTest2.Units
     public class UnitStatus : Component
     {
         public float Speed { get; private set; } = 70;
-        public float JumpHeight { get; private set; } = 50;
+        public float JumpHeight { get; private set; } = 60;
         public float Gravity { get; private set; } = 600;
 
         public int Health { get; private set; } = 100;

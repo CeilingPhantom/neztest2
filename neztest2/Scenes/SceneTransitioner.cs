@@ -1,12 +1,12 @@
 ﻿using Nez;
+using NezTest2.Units;
 
 namespace NezTest2.Scenes
 {
     public class SceneTransitioner : Component, IUpdatable
     {
-        static bool transitioning = false;
         readonly string transitionTo;
-        Entity player;
+        Player player;
         BoxCollider playerCollider, collider;
 
         public SceneTransitioner(string sceneToTransitionTo)
@@ -16,21 +16,20 @@ namespace NezTest2.Scenes
 
         public override void OnAddedToEntity()
         {
-            player = Entity.Scene.FindEntity("player");
             collider = Entity.GetComponent<BoxCollider>();
-            playerCollider = player.GetComponent<BoxCollider>();
+            Entity playerEntity = Entity.Scene.FindEntity("player");
+            player = playerEntity.GetComponent<Player>();
+            playerCollider = playerEntity.GetComponent<BoxCollider>();
         }
 
         public void Update()
         {
-            if (!transitioning && collider.CollidesWith(playerCollider, out CollisionResult res))
+            if (collider.CollidesWith(playerCollider, out CollisionResult res))
             {
                 NezTest2.UpdatePlayer();
-                Core.StartSceneTransition(NezTest2.Scenes[transitionTo]);
-                transitioning = true;
+                Core.StartSceneTransition(new FadeTransition(NezTest2.Scenes[transitionTo]));
+                Entity.Destroy();
             }
-            else
-                transitioning = false;
         }
 
         public void OnTriggerExit(Collider other, Collider local) { }

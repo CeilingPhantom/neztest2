@@ -23,6 +23,10 @@ namespace NezTest2.Units
 
         AnimationChainer animationChainer;
 
+        int midAirJumps = 0;
+        readonly int maxMidAirJumps = 1;
+        bool noGravity = false;
+
         VirtualIntegerAxis xAxisInput;
         VirtualIntegerAxis yAxisInput;
         VirtualButton primaryAttackInput, jumpInput;
@@ -92,6 +96,49 @@ namespace NezTest2.Units
                         }
                     },
                     {
+                        "air-attack1",
+                        new string[]
+                        {
+                            "adventurer-air-attack1-00.png",
+                            "adventurer-air-attack1-01.png",
+                            "adventurer-air-attack1-02.png",
+                            "adventurer-air-attack1-03.png",
+                        }
+                    },
+                    {
+                        "air-attack2",
+                        new string[]
+                        {
+                            "adventurer-air-attack2-00.png",
+                            "adventurer-air-attack2-01.png",
+                            "adventurer-air-attack2-02.png",
+                        }
+                    },
+                    {
+                        "air-attack3-end",
+                        new string[]
+                        {
+                            "adventurer-air-attack3-end-00.png",
+                            "adventurer-air-attack3-end-01.png",
+                            "adventurer-air-attack3-end-02.png",
+                        }
+                    },
+                    {
+                        "air-attack3-loop",
+                        new string[]
+                        {
+                            "adventurer-air-attack3-loop-00.png",
+                            "adventurer-air-attack3-loop-01.png",
+                        }
+                    },
+                    {
+                        "air-attack3-rdy",
+                        new string[]
+                        {
+                            "adventurer-air-attack3-rdy-00.png",
+                        }
+                    },
+                    {
                         "die",
                         new string[]
                         {
@@ -143,14 +190,12 @@ namespace NezTest2.Units
                         }
                     },
                     {
-                        "useItem",
+                        "use-item",
                         new string[]
                         {
                             "adventurer-items-00.png",
                             "adventurer-items-01.png",
                             "adventurer-items-02.png",
-                            "adventurer-items-01.png",
-                            "adventurer-items-00.png",
                         }
                     },
                 };
@@ -182,6 +227,34 @@ namespace NezTest2.Units
                 new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["attack3"][3]}")),
                 new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["attack3"][4]}")),
                 new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["attack3"][5]}")),
+            }, 10));
+            Animator.AddAnimation("air-attack1", new SpriteAnimation(new Sprite[]
+            {
+                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["air-attack1"][0]}")),
+                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["air-attack1"][1]}")),
+                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["air-attack1"][2]}")),
+                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["air-attack1"][3]}")),
+            }, 10));
+            Animator.AddAnimation("air-attack2", new SpriteAnimation(new Sprite[]
+            {
+                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["air-attack2"][0]}")),
+                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["air-attack2"][1]}")),
+                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["air-attack2"][2]}")),
+            }, 10));
+            Animator.AddAnimation("air-attack3-end", new SpriteAnimation(new Sprite[]
+            {
+                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["air-attack3-end"][0]}")),
+                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["air-attack3-end"][1]}")),
+                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["air-attack3-end"][2]}")),
+            }, 10));
+            Animator.AddAnimation("air-attack3-loop", new SpriteAnimation(new Sprite[]
+            {
+                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["air-attack3-loop"][0]}")),
+                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["air-attack3-loop"][1]}")),
+            }, 10));
+            Animator.AddAnimation("air-attack3-rdy", new SpriteAnimation(new Sprite[]
+            {
+                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["air-attack3-rdy"][0]}")),
             }, 10));
             Animator.AddAnimation("die", new SpriteAnimation(new Sprite[]
             {
@@ -219,14 +292,12 @@ namespace NezTest2.Units
                 new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["run"][4]}")),
                 new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["run"][5]}")),
             }, 10));
-            Animator.AddAnimation("useItem", new SpriteAnimation(new Sprite[]
+            Animator.AddAnimation("use-item", new SpriteAnimation(new Sprite[]
             {
-                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["useItem"][0]}")),
-                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["useItem"][1]}")),
-                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["useItem"][2]}")),
-                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["useItem"][3]}")),
-                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["useItem"][4]}")),
-            }, 10));
+                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["use-item"][0]}")),
+                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["use-item"][1]}")),
+                new Sprite(Entity.Scene.Content.LoadTexture($"{ContentPath}/{Animations["use-item"][2]}")),
+            }, 5));
         }
 
         void SetupAnimationChainer()
@@ -235,6 +306,7 @@ namespace NezTest2.Units
 
             animationChainer.AddChainableAnimation("attack1", "attack2");
             animationChainer.AddChainableAnimation("attack2", "attack3");
+            animationChainer.AddChainableAnimation("air-attack1", "air-attack2");
         }
 
         void SetupInput()
@@ -265,21 +337,30 @@ namespace NezTest2.Units
                 string animation;
                 var loopMode = SpriteAnimator.LoopMode.Loop;
 
+                noGravity = false;
+
                 // normal attack
-                if (primaryAttackInput.IsDown)
+                if (primaryAttackInput.IsDown && TiledCollisionState.Below)
                 {
                     animation = "attack1";
                     if (animationChainer.WithinChainTime())
-                    {
-                        if (animationChainer.PrevAnimation == "attack1")
-                            animation = "attack2";
-                        if (animationChainer.PrevAnimation == "attack2")
-                            animation = "attack3";
-                    }
+                        animation = animationChainer.NextAnimation();
                     animationChainer.End();
                     actionLock = ActionLock.Attack;
                     loopMode = SpriteAnimator.LoopMode.ClampForever;
                     UnitsCurrAnimationHasAttacked.Clear();
+                }
+                // air attack
+                else if (primaryAttackInput.IsDown && !TiledCollisionState.Below)
+                {
+                    animation = "air-attack1";
+                    if (animationChainer.WithinChainTime())
+                        animation = animationChainer.NextAnimation();
+                    animationChainer.End();
+                    actionLock = ActionLock.Attack;
+                    loopMode = SpriteAnimator.LoopMode.ClampForever;
+                    UnitsCurrAnimationHasAttacked.Clear();
+                    noGravity = true;
                 }
                 // jumping
                 else if ((TiledCollisionState.Below && jumpInput.IsPressed) || (!TiledCollisionState.Below && Velocity.Y <= 0))
@@ -335,11 +416,26 @@ namespace NezTest2.Units
                 else if (xAxisInput > 0)
                     Velocity.X = Speed;
 
-                if (TiledCollisionState.Below && jumpInput.IsPressed)
+                if (jumpInput.IsPressed && (TiledCollisionState.Below || midAirJumps < maxMidAirJumps))
+                {
+                    if (!TiledCollisionState.Below)
+                        midAirJumps++;
                     Velocity.Y = -Mathf.Sqrt(JumpHeight * Gravity);
+                }
             }
 
-            base.UpdateMovement();
+            if (noGravity)
+                Velocity.Y = 0;
+            else
+                Velocity.Y += Gravity * Time.DeltaTime;
+
+            Mover.Move(Velocity * Time.DeltaTime, TiledCollider, TiledCollisionState);
+
+            if (TiledCollisionState.Below || TiledCollisionState.Above)
+                Velocity.Y = 0;
+
+            if (TiledCollisionState.Below)
+                midAirJumps = 0;
         }
 
         public override void Stunned() { }

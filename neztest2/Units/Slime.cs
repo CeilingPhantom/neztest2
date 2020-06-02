@@ -26,7 +26,7 @@ namespace NezTest2.Units
         static float attackCooldownDuration = 2;
         float attackCooldown = 0;
 
-        public Slime() : base("slime", new Vector2(4, 3), 24, 20)
+        public Slime() : base("slime", new Vector2(4, 8), 24, 15)
         {
             if (SlimeAnimationFrames == null)
                 using (var stream = TitleContainer.OpenStream($"{ContentPath}/{Name}.tsx"))

@@ -118,7 +118,7 @@
 /processorParam:TextureFormat=Color
 /build:Units/player/adventurer-air-attack2-02.png
 
-#begin Units/player/adventurer-air-attack-3-end-00.png
+#begin Units/player/adventurer-air-attack3-end-00.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -128,9 +128,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Units/player/adventurer-air-attack-3-end-00.png
+/build:Units/player/adventurer-air-attack3-end-00.png
 
-#begin Units/player/adventurer-air-attack-3-end-01.png
+#begin Units/player/adventurer-air-attack3-end-01.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -140,9 +140,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Units/player/adventurer-air-attack-3-end-01.png
+/build:Units/player/adventurer-air-attack3-end-01.png
 
-#begin Units/player/adventurer-air-attack-3-end-02.png
+#begin Units/player/adventurer-air-attack3-end-02.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -152,7 +152,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Units/player/adventurer-air-attack-3-end-02.png
+/build:Units/player/adventurer-air-attack3-end-02.png
 
 #begin Units/player/adventurer-air-attack3-loop-00.png
 /importer:TextureImporter

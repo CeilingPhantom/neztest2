@@ -413,6 +413,7 @@ namespace Nez
 		/// <param name="sceneTransition">Scene transition.</param>
 		public static T StartSceneTransition<T>(T sceneTransition) where T : SceneTransition
 		{
+			System.Diagnostics.Debug.WriteLine(_instance._sceneTransition);
 			Insist.IsNull(_instance._sceneTransition,
 				"You cannot start a new SceneTransition until the previous one has completed");
 			_instance._sceneTransition = sceneTransition;

@@ -19,7 +19,7 @@ namespace NezTest2.Units
 
         protected string PrevAnimationFrameName;
         protected bool PrevCollidersFlipX = false;
-        protected Dictionary<string, List<BoxCollider>> EntityColliders;
+        protected Dictionary<string, List<BoxCollider>> HitboxColliders;
         protected Dictionary<string, List<BoxCollider>> AttackColliders;
 
         List<Collider> allColliders;
@@ -35,7 +35,7 @@ namespace NezTest2.Units
         protected Vector2 Velocity = Vector2.Zero;
 
         protected float Speed = 70;
-        protected float JumpHeight = 50;
+        protected float JumpHeight = 60;
         protected float Gravity = 600;
 
         protected int Health = 100;
@@ -71,22 +71,22 @@ namespace NezTest2.Units
             TiledCollider = Entity.AddComponent(new BoxCollider(TiledColliderTopLeft.X - AnimationFrames.TileWidth / 2, TiledColliderTopLeft.Y - AnimationFrames.TileHeight / 2, TiledColliderWidth, TiledColliderHeight));
             allColliders = new List<Collider> { TiledCollider };
 
-            EntityColliders = new Dictionary<string, List<BoxCollider>>();
+            HitboxColliders = new Dictionary<string, List<BoxCollider>>();
             AttackColliders = new Dictionary<string, List<BoxCollider>>();
 
             foreach (TmxTilesetTile frame in AnimationFrames.Tiles.Values)
             {
                 string img = frame.Image.Source.Remove(0, $"{ContentPath}\\".Length);
-                var entityColliders = new List<BoxCollider>();
+                var hitboxColliders = new List<BoxCollider>();
                 var attackColliders = new List<BoxCollider>();
                 if (frame.ObjectGroups.Contains("collision"))
                     foreach (var colliderObj in frame.ObjectGroups["collision"].Objects)
                     {
                         var collider = Entity.AddComponent(new BoxCollider(colliderObj.X - AnimationFrames.TileWidth / 2, colliderObj.Y - AnimationFrames.TileHeight / 2, colliderObj.Width, colliderObj.Height));
                         collider.SetEnabled(false);
-                        if (colliderObj.Name.Equals("entity"))
+                        if (colliderObj.Name.Equals("hitbox"))
                         {
-                            entityColliders.Add(collider);
+                            hitboxColliders.Add(collider);
                             Flags.SetFlagExclusive(ref collider.CollidesWithLayers, 1);
                             Flags.SetFlagExclusive(ref collider.PhysicsLayer, 1);
                         }
@@ -97,10 +97,10 @@ namespace NezTest2.Units
                             Flags.SetFlagExclusive(ref collider.PhysicsLayer, 2);
                         }
                     }
-                EntityColliders.Add(img, entityColliders);
+                HitboxColliders.Add(img, hitboxColliders);
                 AttackColliders.Add(img, attackColliders);
 
-                allColliders.AddRange(entityColliders);
+                allColliders.AddRange(hitboxColliders);
                 allColliders.AddRange(attackColliders);
             }
         }
@@ -142,7 +142,7 @@ namespace NezTest2.Units
             if (PrevAnimationFrameName != null) {
                 if (PrevCollidersFlipX)
                     ColliderFlipX(TiledCollider);
-                foreach (var collider in EntityColliders[PrevAnimationFrameName])
+                foreach (var collider in HitboxColliders[PrevAnimationFrameName])
                 {
                     if (PrevCollidersFlipX)
                         ColliderFlipX(collider);
@@ -163,7 +163,7 @@ namespace NezTest2.Units
                 PrevCollidersFlipX = true;
                 ColliderFlipX(TiledCollider);
             }
-            foreach (var collider in EntityColliders[PrevAnimationFrameName])
+            foreach (var collider in HitboxColliders[PrevAnimationFrameName])
             {
                 if (PrevCollidersFlipX)
                     ColliderFlipX(collider);

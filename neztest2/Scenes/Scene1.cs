@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Nez;
 using Nez.Tiled;
 using NezTest2.Units;
@@ -8,6 +9,11 @@ namespace NezTest2.Scenes
 {
     public class Scene1 : Scene
     {
+        static Dictionary<string, Entity> enemiesAlive = new Dictionary<string, Entity>
+        {
+            { "slime1", null },
+            { "slime2", null },
+        };
         Player player;
 
         public Scene1(Player player) : base()
@@ -36,13 +42,21 @@ namespace NezTest2.Scenes
             player.AddComponent(this.player);
             player.AddComponent(new TiledMapMover(tiledTmx.GetLayer<TmxLayer>("1")));
 
-            Entity slime1 = CreateEntity("slime1", new Vector2(300, 200));
-            slime1.AddComponent(new Slime());
-            slime1.AddComponent(new TiledMapMover(tiledTmx.GetLayer<TmxLayer>("1")));
+            if (enemiesAlive.ContainsKey("slime1"))
+            {
+                Entity slime1 = CreateEntity("slime1", new Vector2(300, 200));
+                slime1.AddComponent(new Slime());
+                slime1.AddComponent(new TiledMapMover(tiledTmx.GetLayer<TmxLayer>("1")));
+                enemiesAlive["slime1"] = slime1;
+            }
 
-            Entity slime2 = CreateEntity("slime2", new Vector2(350, 200));
-            slime2.AddComponent(new Slime());
-            slime2.AddComponent(new TiledMapMover(tiledTmx.GetLayer<TmxLayer>("1")));
+            if (enemiesAlive.ContainsKey("slime2"))
+            {
+                Entity slime2 = CreateEntity("slime2", new Vector2(350, 200));
+                slime2.AddComponent(new Slime());
+                slime2.AddComponent(new TiledMapMover(tiledTmx.GetLayer<TmxLayer>("1")));
+                enemiesAlive["slime2"] = slime2;
+            }
 
             var endObj = tiledTmx.ObjectGroups["obj"].Objects["end"];
             Entity end = CreateEntity("end", new Vector2(endObj.X, endObj.Y));
@@ -55,6 +69,13 @@ namespace NezTest2.Scenes
         public override void Update()
         {
             base.Update();
+
+            List<string> toRmEnemies = new List<string>();
+            foreach (string enemy in enemiesAlive.Keys)
+                if (enemiesAlive[enemy].IsDestroyed)
+                    toRmEnemies.Add(enemy);
+            foreach (string enemy in toRmEnemies)
+                enemiesAlive.Remove(enemy);
         }
     }
 }

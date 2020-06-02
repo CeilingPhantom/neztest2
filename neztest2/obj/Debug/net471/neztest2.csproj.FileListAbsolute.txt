@@ -169,9 +169,6 @@ C:\Users\james\Documents\MonoGame Projects\NezTest2\neztest2\bin\Debug\net471\Co
 C:\Users\james\Documents\MonoGame Projects\NezTest2\neztest2\bin\Debug\net471\Content\Units\player\adventurer-swrd-shte-03.xnb
 C:\Users\james\Documents\MonoGame Projects\NezTest2\neztest2\bin\Debug\net471\Content\Units\player\adventurer-wall-slide-00.xnb
 C:\Users\james\Documents\MonoGame Projects\NezTest2\neztest2\bin\Debug\net471\Content\Units\player\adventurer-wall-slide-01.xnb
-C:\Users\james\Documents\MonoGame Projects\NezTest2\neztest2\bin\Debug\net471\Content\Units\player\adventurer-air-attack-3-end-00.png
-C:\Users\james\Documents\MonoGame Projects\NezTest2\neztest2\bin\Debug\net471\Content\Units\player\adventurer-air-attack-3-end-01.png
-C:\Users\james\Documents\MonoGame Projects\NezTest2\neztest2\bin\Debug\net471\Content\Units\player\adventurer-air-attack-3-end-02.png
 C:\Users\james\Documents\MonoGame Projects\NezTest2\neztest2\bin\Debug\net471\Content\Units\player\adventurer-air-attack1-00.png
 C:\Users\james\Documents\MonoGame Projects\NezTest2\neztest2\bin\Debug\net471\Content\Units\player\adventurer-air-attack1-01.png
 C:\Users\james\Documents\MonoGame Projects\NezTest2\neztest2\bin\Debug\net471\Content\Units\player\adventurer-air-attack1-02.png
@@ -301,3 +298,9 @@ C:\Users\james\Documents\MonoGame Projects\NezTest2\neztest2\bin\Debug\net471\Co
 C:\Users\james\Documents\MonoGame Projects\NezTest2\neztest2\bin\Debug\net471\Content\Units\slime\slime-move-2.png
 C:\Users\james\Documents\MonoGame Projects\NezTest2\neztest2\bin\Debug\net471\Content\Units\slime\slime-move-3.png
 C:\Users\james\Documents\MonoGame Projects\NezTest2\neztest2\bin\Debug\net471\Content\Units\slime\slime.tsx
+C:\Users\james\Documents\MonoGame Projects\NezTest2\neztest2\bin\Debug\net471\Content\Units\player\adventurer-air-attack3-end-00.xnb
+C:\Users\james\Documents\MonoGame Projects\NezTest2\neztest2\bin\Debug\net471\Content\Units\player\adventurer-air-attack3-end-01.xnb
+C:\Users\james\Documents\MonoGame Projects\NezTest2\neztest2\bin\Debug\net471\Content\Units\player\adventurer-air-attack3-end-02.xnb
+C:\Users\james\Documents\MonoGame Projects\NezTest2\neztest2\bin\Debug\net471\Content\Units\player\adventurer-air-attack3-end-00.png
+C:\Users\james\Documents\MonoGame Projects\NezTest2\neztest2\bin\Debug\net471\Content\Units\player\adventurer-air-attack3-end-01.png
+C:\Users\james\Documents\MonoGame Projects\NezTest2\neztest2\bin\Debug\net471\Content\Units\player\adventurer-air-attack3-end-02.png

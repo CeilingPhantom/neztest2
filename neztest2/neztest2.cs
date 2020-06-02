@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Nez;
 using NezTest2.Scenes;
 using NezTest2.Units;
@@ -10,7 +11,7 @@ namespace NezTest2
     /// </summary>
     public class NezTest2 : Core
     {
-        public static Dictionary<string, SceneTransition> Scenes { get; private set; }
+        public static Dictionary<string, Func<Scene>> Scenes { get; private set; }
         static Player player;
 
 
@@ -24,9 +25,9 @@ namespace NezTest2
             base.Initialize();
             Scene.SetDefaultDesignResolution(320, 320, Scene.SceneResolutionPolicy.ShowAllPixelPerfect);
             
-            Scenes = new Dictionary<string, SceneTransition>
+            Scenes = new Dictionary<string, Func<Scene>>
             {
-                { "1", new FadeTransition(() => new Scene1(player)) },
+                { "1", () => new Scene1(player) },
             };
             
             Scene = new Scene1(player);

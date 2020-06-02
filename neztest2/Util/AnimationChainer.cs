@@ -5,7 +5,7 @@ namespace NezTest2.Util
 {
     public class AnimationChainer : Component, IUpdatable
     {
-        Dictionary<string, List<string>> chainableAnimations = new Dictionary<string, List<string>>();
+        Dictionary<string, string> chainableAnimations = new Dictionary<string, string>();
         public string PrevAnimation { private set; get; }
         float elapsedTime = -1;
         readonly static float maxTime = 0.3f;
@@ -14,13 +14,12 @@ namespace NezTest2.Util
 
         public void AddChainableAnimation(string initial, string chainsInto)
         {
-            if (!chainableAnimations.ContainsKey(initial))
-                chainableAnimations.Add(initial, new List<string> { chainsInto });
-            else
-                chainableAnimations[initial].Add(chainsInto);
+            chainableAnimations[initial] = chainsInto;
         }
 
         public bool IsChainableAnimation(string animation) => chainableAnimations.ContainsKey(animation);
+
+        public string NextAnimation() => chainableAnimations[PrevAnimation];
 
         public void Start(string prevAnimation)
         {
