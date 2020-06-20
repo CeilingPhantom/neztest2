@@ -12,8 +12,6 @@ namespace NezTest2
     public class NezTest2 : Core
     {
         public static Dictionary<string, Func<Scene>> Scenes { get; private set; }
-        static Player player;
-
 
         public NezTest2() : base(640, 640)
         {
@@ -27,19 +25,10 @@ namespace NezTest2
             
             Scenes = new Dictionary<string, Func<Scene>>
             {
-                { "1", () => new Scene1(player) },
+                { "1", () => new Scene1() },
             };
             
-            Scene = new Scene1(player);
-        }
-
-        public static Player UpdatePlayer()
-        {
-            if (player == null)
-                player = new Player();
-            else
-                player = (Player)player.Clone();
-            return player;
+            Scene = new Scene1();
         }
     }
 }

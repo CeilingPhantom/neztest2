@@ -7,19 +7,15 @@ using NezTest2.Util;
 
 namespace NezTest2.Scenes
 {
-    public class Scene1 : Scene
+    public class Scene1 : SceneBase
     {
-        static Dictionary<string, Entity> enemiesAlive = new Dictionary<string, Entity>
+        static Dictionary<string, UnitStat> enemyStats = new Dictionary<string, UnitStat>
         {
             { "slime1", null },
             { "slime2", null },
         };
-        Player player;
 
-        public Scene1(Player player) : base()
-        {
-            this.player = player;
-        }
+        public Scene1() : base() { }
 
         public override void Initialize()
         {
@@ -37,25 +33,34 @@ namespace NezTest2.Scenes
             tiledMap2.RenderLayer = -1;
 
             Entity player = CreateEntity("player", new Vector2(50, 200));
-            if (this.player == null)
-                this.player = NezTest2.UpdatePlayer();
-            player.AddComponent(this.player);
+            player.AddComponent(new Player());
+            player.AddComponent(PlayerStats);
             player.AddComponent(new TiledMapMover(tiledTmx.GetLayer<TmxLayer>("1")));
 
-            if (enemiesAlive.ContainsKey("slime1"))
+            if (enemyStats.ContainsKey("slime1"))
             {
                 Entity slime1 = CreateEntity("slime1", new Vector2(300, 200));
-                slime1.AddComponent(new Slime());
                 slime1.AddComponent(new TiledMapMover(tiledTmx.GetLayer<TmxLayer>("1")));
-                enemiesAlive["slime1"] = slime1;
+                if (enemyStats["slime1"] == null)
+                    slime1.AddComponent(new Slime());
+                else
+                {
+                    slime1.AddComponent(new Slime(false));
+                    slime1.AddComponent(enemyStats["slime1"]);
+                }
             }
 
-            if (enemiesAlive.ContainsKey("slime2"))
+            if (enemyStats.ContainsKey("slime2"))
             {
                 Entity slime2 = CreateEntity("slime2", new Vector2(350, 200));
-                slime2.AddComponent(new Slime());
                 slime2.AddComponent(new TiledMapMover(tiledTmx.GetLayer<TmxLayer>("1")));
-                enemiesAlive["slime2"] = slime2;
+                if (enemyStats["slime2"] == null)
+                    slime2.AddComponent(new Slime());
+                else
+                {
+                    slime2.AddComponent(new Slime(false));
+                    slime2.AddComponent(enemyStats["slime2"]);
+                }
             }
 
             var endObj = tiledTmx.ObjectGroups["obj"].Objects["end"];
@@ -66,16 +71,24 @@ namespace NezTest2.Scenes
             Camera.AddComponent(new FollowCamera(player));
         }
 
+        public override void UpdatePersistence()
+        {
+            base.UpdatePersistence();
+
+            enemyStats["slime1"] = (UnitStat)FindEntity("slime1").GetComponent<UnitStat>().Clone();
+            enemyStats["slime2"] = (UnitStat)FindEntity("slime2").GetComponent<UnitStat>().Clone();
+        }
+
         public override void Update()
         {
             base.Update();
 
             List<string> toRmEnemies = new List<string>();
-            foreach (string enemy in enemiesAlive.Keys)
-                if (enemiesAlive[enemy].IsDestroyed)
+            foreach (string enemy in enemyStats.Keys)
+                if (enemyStats[enemy] != null && FindEntity(enemy).IsDestroyed)
                     toRmEnemies.Add(enemy);
             foreach (string enemy in toRmEnemies)
-                enemiesAlive.Remove(enemy);
+                enemyStats.Remove(enemy);
         }
     }
 }

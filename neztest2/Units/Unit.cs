@@ -34,27 +34,28 @@ namespace NezTest2.Units
         protected TiledMapMover.CollisionState TiledCollisionState;
         protected Vector2 Velocity = Vector2.Zero;
 
-        protected float Speed = 70;
-        protected float JumpHeight = 60;
-        protected float Gravity = 600;
+        private readonly bool NewStatReq;
+        protected UnitStat Stats;
 
-        protected int Health = 100;
-        protected float DamageLow = 30;
-        protected float DamageHigh = 40;
-
-        public Unit(string name, Vector2 tiledColliderTopLeft, float tiledColliderWidth, float tiledColliderHeight)
+        public Unit(string name, Vector2 tiledColliderTopLeft, float tiledColliderWidth, float tiledColliderHeight, bool newStatReq=true)
         {
             Name = name;
             ContentPath = $"Content/Units/{Name}";
             TiledColliderTopLeft = tiledColliderTopLeft;
             TiledColliderWidth = tiledColliderWidth;
             TiledColliderHeight = tiledColliderHeight;
+            NewStatReq = newStatReq;
         }
 
         #region Component Lifecycle
 
         public override void OnAddedToEntity()
         {
+            if (NewStatReq)
+                SetupNewStat();
+            else
+                Stats = Entity.GetComponent<UnitStat>();
+
             Animator = Entity.AddComponent(new SpriteAnimator());
             AddAnimations();
 
@@ -62,6 +63,11 @@ namespace NezTest2.Units
 
             Mover = Entity.GetComponent<TiledMapMover>();
             TiledCollisionState = new TiledMapMover.CollisionState();
+        }
+
+        protected virtual void SetupNewStat()
+        {
+            Stats = Entity.AddComponent(new UnitStat());
         }
 
         protected abstract void AddAnimations();
@@ -111,7 +117,7 @@ namespace NezTest2.Units
 
         public virtual void Update()
         {
-            if (Health > 0)
+            if (Stats.Health > 0)
             {
                 UpdateAnimations();
                 UpdateMovement();
@@ -129,7 +135,7 @@ namespace NezTest2.Units
         protected virtual void UpdateMovement()
         {
             // falling motion
-            Velocity.Y += Gravity * Time.DeltaTime;
+            Velocity.Y += Stats.Gravity * Time.DeltaTime;
 
             Mover.Move(Velocity * Time.DeltaTime, TiledCollider, TiledCollisionState);
 
@@ -201,7 +207,7 @@ namespace NezTest2.Units
 
         protected virtual void AttackUnit(Unit unit)
         {
-            unit.Attacked(this, (int) Math.Round(Nez.Random.Range(DamageLow, DamageHigh)));
+            unit.Attacked(this, (int) Math.Round(Nez.Random.Range(Stats.DamageLow, Stats.DamageHigh)));
         }
 
         #endregion
@@ -215,10 +221,9 @@ namespace NezTest2.Units
         /// <param name="damage"></param>
         public virtual void Attacked(Unit unit, int damage)
         {
-            if (Health > 0)
+            if (Stats.Health > 0)
             {
-                Health -= damage;
-                if (Health <= 0)
+                if (Stats.TakeDamage(damage) <= 0)
                     Die();
             }
         }

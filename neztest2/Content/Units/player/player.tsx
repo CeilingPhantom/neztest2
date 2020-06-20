@@ -562,15 +562,40 @@
  </tile>
  <tile id="69">
   <image width="50" height="37" source="adventurer-idle-2-00.png"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" name="hitbox" x="17" y="26" width="15" height="10"/>
+   <object id="2" name="hitbox" x="16" y="22" width="17" height="4"/>
+   <object id="3" name="hitbox" x="19" y="18" width="13" height="4"/>
+   <object id="4" name="hitbox" x="21" y="9" width="8" height="9"/>
+  </objectgroup>
  </tile>
  <tile id="70">
   <image width="50" height="37" source="adventurer-idle-2-01.png"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" name="hitbox" x="17" y="25" width="15" height="11"/>
+   <object id="2" name="hitbox" x="16" y="21" width="17" height="4"/>
+   <object id="3" name="hitbox" x="19" y="18" width="13" height="3"/>
+   <object id="4" name="hitbox" x="21" y="9" width="8" height="9"/>
+  </objectgroup>
  </tile>
  <tile id="71">
   <image width="50" height="37" source="adventurer-idle-2-02.png"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" name="hitbox" x="17" y="25" width="15" height="11"/>
+   <object id="2" name="hitbox" x="15" y="21" width="19" height="4"/>
+   <object id="3" name="hitbox" x="18" y="17" width="15" height="4"/>
+   <object id="4" name="hitbox" x="21" y="8" width="8" height="9"/>
+  </objectgroup>
  </tile>
  <tile id="72">
   <image width="50" height="37" source="adventurer-idle-2-03.png"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" name="hitbox" x="17" y="26" width="15" height="10"/>
+   <object id="2" name="hitbox" x="15" y="22" width="19" height="4"/>
+   <object id="3" name="hitbox" x="18" y="19" width="15" height="3"/>
+   <object id="4" name="hitbox" x="20" y="16" width="9" height="3"/>
+   <object id="5" name="hitbox" x="21" y="8" width="8" height="8"/>
+  </objectgroup>
  </tile>
  <tile id="73">
   <image width="50" height="37" source="adventurer-idle-03.png"/>

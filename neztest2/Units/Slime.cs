@@ -23,18 +23,20 @@ namespace NezTest2.Units
 
         Entity player;
         float distanceSlimeFrontToPlayer;
-        static float attackCooldownDuration = 2;
+        static readonly float attackCooldownDuration = 2;
         float attackCooldown = 0;
 
-        public Slime() : base("slime", new Vector2(4, 8), 24, 15)
+        public Slime(bool newStatReq=true) : base("slime", new Vector2(4, 8), 24, 15, newStatReq)
         {
             if (SlimeAnimationFrames == null)
                 using (var stream = TitleContainer.OpenStream($"{ContentPath}/{Name}.tsx"))
                     SlimeAnimationFrames = new TmxTileset().LoadTmxTileset(null, System.Xml.Linq.XDocument.Load(stream).Element("tileset"), 1, ContentPath);
             AnimationFrames = SlimeAnimationFrames;
+        }
 
-            Speed = 30;
-            Health = 50;
+        protected override void SetupNewStat()
+        {
+            Stats = Entity.AddComponent(new UnitStat(speed: 30, health: 50));
         }
 
         public override void OnAddedToEntity()
@@ -144,6 +146,7 @@ namespace NezTest2.Units
 
         protected override void UpdateAnimations()
         {
+            //System.Diagnostics.Debug.WriteLine(Stats.Health);
             if (Animator.IsCompleted)
                 actionLock = ActionLock.None;
 
@@ -189,7 +192,7 @@ namespace NezTest2.Units
             if (actionLock == ActionLock.None)
             {
                 if (distanceSlimeFrontToPlayer != 0)
-                    Velocity.X = distanceSlimeFrontToPlayer / Math.Abs(distanceSlimeFrontToPlayer) * Speed;
+                    Velocity.X = distanceSlimeFrontToPlayer / Math.Abs(distanceSlimeFrontToPlayer) * Stats.Speed;
             }
 
             base.UpdateMovement();
@@ -240,6 +243,7 @@ namespace NezTest2.Units
         {
             if (!Animator.IsAnimationActive("die"))
                 Animator.Play("die", SpriteAnimator.LoopMode.ClampForever);
+            UpdateColliders();
             if (Animator.IsCompleted)
                 return true;
             return false;

@@ -31,14 +31,12 @@ namespace NezTest2.Units
         VirtualIntegerAxis yAxisInput;
         VirtualButton primaryAttackInput, jumpInput;
 
-        public Player() : base("player", new Vector2(15, 5), 20, 30)
+        public Player() : base("player", new Vector2(15, 5), 20, 30, false)
         {
             if (PlayerAnimationFrames == null)
                 using (var stream = TitleContainer.OpenStream($"{ContentPath}/{Name}.tsx"))
                     PlayerAnimationFrames = new TmxTileset().LoadTmxTileset(null, System.Xml.Linq.XDocument.Load(stream).Element("tileset"), 1, ContentPath);
             AnimationFrames = PlayerAnimationFrames;
-
-            Health = 100;
         }
 
         public override void OnAddedToEntity()
@@ -412,22 +410,22 @@ namespace NezTest2.Units
             if (actionLock == ActionLock.None)
             {
                 if (xAxisInput.Value < 0)
-                    Velocity.X = -Speed;
+                    Velocity.X = -Stats.Speed;
                 else if (xAxisInput > 0)
-                    Velocity.X = Speed;
+                    Velocity.X = Stats.Speed;
 
                 if (jumpInput.IsPressed && (TiledCollisionState.Below || midAirJumps < maxMidAirJumps))
                 {
                     if (!TiledCollisionState.Below)
                         midAirJumps++;
-                    Velocity.Y = -Mathf.Sqrt(JumpHeight * Gravity);
+                    Velocity.Y = -Mathf.Sqrt(Stats.JumpHeight * Stats.Gravity);
                 }
             }
 
             if (noGravity)
                 Velocity.Y = 0;
             else
-                Velocity.Y += Gravity * Time.DeltaTime;
+                Velocity.Y += Stats.Gravity * Time.DeltaTime;
 
             Mover.Move(Velocity * Time.DeltaTime, TiledCollider, TiledCollisionState);
 
@@ -444,6 +442,7 @@ namespace NezTest2.Units
         {
             if (!Animator.IsAnimationActive("die"))
                 Animator.Play("die", SpriteAnimator.LoopMode.ClampForever);
+            UpdateColliders();
             if (Animator.IsCompleted)
                 return true;
             return false;

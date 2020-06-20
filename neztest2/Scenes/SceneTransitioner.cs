@@ -26,7 +26,7 @@ namespace NezTest2.Scenes
         {
             if (collider.CollidesWith(playerCollider, out CollisionResult res))
             {
-                NezTest2.UpdatePlayer();
+                ((SceneBase)Core.Scene).UpdatePersistence();
                 Core.StartSceneTransition(new FadeTransition(NezTest2.Scenes[transitionTo]));
                 Entity.Destroy();
             }
