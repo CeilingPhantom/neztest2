@@ -45,7 +45,7 @@ namespace NezTest2.Scenes
                     slime1.AddComponent(new Slime());
                 else
                 {
-                    slime1.AddComponent(new Slime(false));
+                    slime1.AddComponent(new Slime());
                     slime1.AddComponent(enemyStats["slime1"]);
                 }
             }
@@ -58,7 +58,7 @@ namespace NezTest2.Scenes
                     slime2.AddComponent(new Slime());
                 else
                 {
-                    slime2.AddComponent(new Slime(false));
+                    slime2.AddComponent(new Slime());
                     slime2.AddComponent(enemyStats["slime2"]);
                 }
             }
@@ -75,17 +75,21 @@ namespace NezTest2.Scenes
         {
             base.UpdatePersistence();
 
-            enemyStats["slime1"] = (UnitStat)FindEntity("slime1").GetComponent<UnitStat>().Clone();
-            enemyStats["slime2"] = (UnitStat)FindEntity("slime2").GetComponent<UnitStat>().Clone();
+            foreach (string enemy in new List<string>(enemyStats.Keys))
+            {
+                var enemyEntity = FindEntity(enemy);
+                if (enemyEntity != null && !enemyEntity.IsDestroyed)
+                    enemyStats[enemy] = (UnitStat)enemyEntity.GetComponent<UnitStat>().Clone();
+            }
         }
 
         public override void Update()
         {
             base.Update();
-
+            
             List<string> toRmEnemies = new List<string>();
             foreach (string enemy in enemyStats.Keys)
-                if (enemyStats[enemy] != null && FindEntity(enemy).IsDestroyed)
+                if (FindEntity(enemy).IsDestroyed)
                     toRmEnemies.Add(enemy);
             foreach (string enemy in toRmEnemies)
                 enemyStats.Remove(enemy);

@@ -31,7 +31,7 @@ namespace NezTest2.Units
         VirtualIntegerAxis yAxisInput;
         VirtualButton primaryAttackInput, jumpInput;
 
-        public Player() : base("player", new Vector2(15, 5), 20, 30, false)
+        public Player() : base("player", new Vector2(15, 5), 20, 30)
         {
             if (PlayerAnimationFrames == null)
                 using (var stream = TitleContainer.OpenStream($"{ContentPath}/{Name}.tsx"))
@@ -41,6 +41,7 @@ namespace NezTest2.Units
 
         public override void OnAddedToEntity()
         {
+            Entity.AddComponent(new UnitStat());
             base.OnAddedToEntity();
             SetupAnimationChainer();
             SetupInput();

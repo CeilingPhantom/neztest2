@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "+adrRL9Lx1MWEXelickpnf85X7Rn/CSJxuM6OOuZOX+XitkPTBVirHUJcfe+BQGvn7BUmQySjMczAWMO8rz3lw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\james\\Documents\\MonoGame Projects\\NezTest2\\neztest2\\neztest2.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\james\\.nuget\\packages\\monogame.content.builder\\3.7.0.9\\monogame.content.builder.3.7.0.9.nupkg.sha512",
+    "C:\\Users\\james\\.nuget\\packages\\monogame.framework.desktopgl.core\\3.7.0.10\\monogame.framework.desktopgl.core.3.7.0.10.nupkg.sha512",
+    "C:\\Users\\james\\.nuget\\packages\\nez.pipelineimporter\\0.9.5\\nez.pipelineimporter.0.9.5.nupkg.sha512",
+    "C:\\Users\\james\\.nuget\\packages\\system.drawing.common\\4.6.0\\system.drawing.common.4.6.0.nupkg.sha512"
+  ],
+  "logs": []
+}

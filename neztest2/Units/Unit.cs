@@ -34,27 +34,22 @@ namespace NezTest2.Units
         protected TiledMapMover.CollisionState TiledCollisionState;
         protected Vector2 Velocity = Vector2.Zero;
 
-        private readonly bool NewStatReq;
         protected UnitStat Stats;
 
-        public Unit(string name, Vector2 tiledColliderTopLeft, float tiledColliderWidth, float tiledColliderHeight, bool newStatReq=true)
+        public Unit(string name, Vector2 tiledColliderTopLeft, float tiledColliderWidth, float tiledColliderHeight)
         {
             Name = name;
             ContentPath = $"Content/Units/{Name}";
             TiledColliderTopLeft = tiledColliderTopLeft;
             TiledColliderWidth = tiledColliderWidth;
             TiledColliderHeight = tiledColliderHeight;
-            NewStatReq = newStatReq;
         }
 
         #region Component Lifecycle
 
         public override void OnAddedToEntity()
         {
-            if (NewStatReq)
-                SetupNewStat();
-            else
-                Stats = Entity.GetComponent<UnitStat>();
+            Stats = Entity.GetComponent<UnitStat>();
 
             Animator = Entity.AddComponent(new SpriteAnimator());
             AddAnimations();
@@ -63,11 +58,6 @@ namespace NezTest2.Units
 
             Mover = Entity.GetComponent<TiledMapMover>();
             TiledCollisionState = new TiledMapMover.CollisionState();
-        }
-
-        protected virtual void SetupNewStat()
-        {
-            Stats = Entity.AddComponent(new UnitStat());
         }
 
         protected abstract void AddAnimations();

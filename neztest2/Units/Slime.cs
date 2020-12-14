@@ -26,7 +26,7 @@ namespace NezTest2.Units
         static readonly float attackCooldownDuration = 2;
         float attackCooldown = 0;
 
-        public Slime(bool newStatReq=true) : base("slime", new Vector2(4, 8), 24, 15, newStatReq)
+        public Slime() : base("slime", new Vector2(4, 8), 24, 15)
         {
             if (SlimeAnimationFrames == null)
                 using (var stream = TitleContainer.OpenStream($"{ContentPath}/{Name}.tsx"))
@@ -34,13 +34,9 @@ namespace NezTest2.Units
             AnimationFrames = SlimeAnimationFrames;
         }
 
-        protected override void SetupNewStat()
-        {
-            Stats = Entity.AddComponent(new UnitStat(speed: 30, health: 50));
-        }
-
         public override void OnAddedToEntity()
         {
+            Entity.AddComponent(new UnitStat(speed: 30, health: 50));
             base.OnAddedToEntity();
             player = Entity.Scene.FindEntity("player");
         }

@@ -1,0 +1,116 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\james\\Documents\\MonoGame Projects\\NezTest2\\neztest2\\neztest2.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\james\\Documents\\MonoGame Projects\\NezTest2\\neztest2\\neztest2.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\james\\Documents\\MonoGame Projects\\NezTest2\\neztest2\\neztest2.csproj",
+        "projectName": "neztest2",
+        "projectPath": "C:\\Users\\james\\Documents\\MonoGame Projects\\NezTest2\\neztest2\\neztest2.csproj",
+        "packagesPath": "C:\\Users\\james\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\james\\Documents\\MonoGame Projects\\NezTest2\\neztest2\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\james\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net471"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net471": {
+            "projectReferences": {
+              "C:\\Users\\james\\Documents\\MonoGame Projects\\NezTest2\\Nez\\Nez.Portable\\Nez.csproj": {
+                "projectPath": "C:\\Users\\james\\Documents\\MonoGame Projects\\NezTest2\\Nez\\Nez.Portable\\Nez.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net471": {
+          "dependencies": {
+            "MonoGame.Content.Builder": {
+              "target": "Package",
+              "version": "[3.7.0.9, )"
+            },
+            "MonoGame.Framework.DesktopGL.Core": {
+              "target": "Package",
+              "version": "[3.7.0.10, )"
+            },
+            "Nez.PipelineImporter": {
+              "target": "Package",
+              "version": "[0.9.5, )"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "win7-x64": {
+          "#import": []
+        }
+      }
+    },
+    "C:\\Users\\james\\Documents\\MonoGame Projects\\NezTest2\\Nez\\Nez.Portable\\Nez.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\james\\Documents\\MonoGame Projects\\NezTest2\\Nez\\Nez.Portable\\Nez.csproj",
+        "projectName": "Nez",
+        "projectPath": "C:\\Users\\james\\Documents\\MonoGame Projects\\NezTest2\\Nez\\Nez.Portable\\Nez.csproj",
+        "packagesPath": "C:\\Users\\james\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\james\\Documents\\MonoGame Projects\\NezTest2\\Nez\\Nez.Portable\\obj\\Nez\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\james\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net471"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net471": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net471": {
+          "dependencies": {
+            "MonoGame.Framework.Portable": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.7.1.189, )"
+            },
+            "System.Drawing.Common": {
+              "target": "Package",
+              "version": "[4.6.0, )"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
